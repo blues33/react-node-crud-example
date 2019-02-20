@@ -11,9 +11,8 @@ const renderStarRating = ({
   meta: { touched, error },
 }) => {
   return (
-    <FormGroup>
+    <FormGroup className="custom-form-group">
       <StarRatings
-        className="star-rating"
         numberOfStars={Number(stars)}
         rating={Number(input.value)}
         changeRating={value => input.onChange(value)}

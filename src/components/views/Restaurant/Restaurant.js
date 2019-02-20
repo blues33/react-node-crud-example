@@ -303,7 +303,7 @@ export class Restaurant extends React.Component {
             </Col>
           }
         </Row>
-        : "Loading..."
+        : <div className="align-center"><h4>Restaurant does not exist</h4></div>
       }
         <Modal isOpen={this.state.isEditModalOpen}>
           <ModalHeader toggle={this.toggleEditModal}>Edit Review</ModalHeader>

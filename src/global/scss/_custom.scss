@@ -89,3 +89,7 @@
 .filter-label {
   white-space: nowrap;
 }
+
+.custom-form-group > .invalid-feedback {
+  display: block;
+}

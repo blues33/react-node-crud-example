@@ -10598,5 +10598,8 @@ body {
 .filter-label {
   white-space: nowrap; }
 
+.custom-form-group > .invalid-feedback {
+  display: block; }
+
 html body .app.flex-row.align-items-center {
   height: 100vh; }

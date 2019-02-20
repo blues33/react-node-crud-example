@@ -54,28 +54,31 @@ class PendingReviews extends React.Component {
     const { user, pendingReviews } = this.props;
     return (
       <div className="animated fadeIn h-100 w-100">
-        {pendingReviews.map((review, i) => (
-        <Card key={`review-${i}`}>
-          <CardBody>
-            <div className="space-between align-middle">
-              <div>
-                <div className="align-middle m-b-10">
-                  <span className="m-r-20 m-t-5"><strong>{review.user.fullname}</strong></span>
-                  <StarRatings
-                    rating={review.rate}
-                    starRatedColor="rgb(230, 67, 47)"
-                    starDimension="20px"
-                    starSpacing="0px"
-                  />
+        {pendingReviews.length > 0 ?
+          pendingReviews.map((review, i) => (
+          <Card key={`review-${i}`}>
+            <CardBody>
+              <div className="space-between align-middle">
+                <div>
+                  <div className="align-middle m-b-10">
+                    <span className="m-r-20 m-t-5"><strong>{review.user.fullname}</strong></span>
+                    <StarRatings
+                      rating={review.rate}
+                      starRatedColor="rgb(230, 67, 47)"
+                      starDimension="20px"
+                      starSpacing="0px"
+                    />
+                  </div>
+                  <div className="m-b-10">{moment(review.created).format('MM-DD-YYYY')}</div>
+                  <p>{ review.comment }</p>
                 </div>
-                <div className="m-b-10">{moment(review.created).format('MM-DD-YYYY')}</div>
-                <p>{ review.comment }</p>
+                <Button color="primary" onClick={() => this.reply(review)}>Reply</Button>
               </div>
-              <Button color="primary" onClick={() => this.reply(review)}>Reply</Button>
-            </div>
-          </CardBody>
-        </Card>
-        ))}
+            </CardBody>
+          </Card>
+          ))
+          : <div className="align-center"><h4>No pending reviews</h4></div>
+        }
         <Modal isOpen={this.state.isModalOpen}>
           <ModalHeader toggle={this.toggle}>Reply</ModalHeader>
           <ModalBody>

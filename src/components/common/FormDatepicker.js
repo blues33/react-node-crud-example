@@ -11,7 +11,7 @@ const renderDatePicker = ({
   meta: { touched, error },
 }) => {
   return (
-    <FormGroup>
+    <FormGroup className="custom-form-group">
       <Label>{label}</Label>
       <div className="m-b-10">
         <DatePicker
