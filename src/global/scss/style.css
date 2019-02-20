@@ -10576,7 +10576,8 @@ body {
   vertical-align: middle; }
 
 .align-center {
-  text-align: center; }
+  text-align: center;
+  justify-content: center; }
 
 .space-between {
   display: flex;

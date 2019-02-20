@@ -42,6 +42,11 @@ const EditUserForm = Loadable({
   loading: Loading,
 });
 
+const Profile = Loadable({
+  loader: () => import('./components/views/Users/Profile'),
+  loading: Loading,
+});
+
 const PendingReviews = Loadable({
   loader: () => import('./components/views/Reviews/List'),
   loading: Loading,
@@ -57,6 +62,7 @@ const routes = [
   { path: '/add-user', name: 'Add User', component: UserForm, roles: ['admin'] },
   { path: '/edit-user/:id', name: 'Edit User', component: EditUserForm, roles: ['admin'] },
   { path: '/reviews-pending', name: 'Pending Reviews', component: PendingReviews, roles: ['owner'] },
+  { path: '/profile', name: 'Edit User', component: Profile },
 ];
 
 export default routes;

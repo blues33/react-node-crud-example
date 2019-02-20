@@ -9,6 +9,7 @@ import {
   getUser,
   updateUser,
   deleteUser,
+  updateProfile,
 } from '../controllers/user';
 
 export default (passport) => {
@@ -18,6 +19,7 @@ export default (passport) => {
 
   router.post('/login', login);
   router.post('/register', register);
+  router.post('/profile', authenticate, updateProfile);
 
   const middlewares = [
     authenticate,

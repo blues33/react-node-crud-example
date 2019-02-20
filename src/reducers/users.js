@@ -6,7 +6,6 @@ import {
   USER_UPDATED,
   USER_DELETED,
   LOGOUT,
-  SET_CURRENT_USER,
 } from '../global/constants';
 
 const initialState = {

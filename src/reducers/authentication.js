@@ -3,6 +3,7 @@ import {
   FINISH_LOADING,
   LOGIN_SUCCESS,
   REGISTER_SUCCESS,
+  PROFILE_UPDATED,
   LOGOUT,
 } from "../global/constants";
 
@@ -39,6 +40,13 @@ export default function authentication(state = initialState, action) {
         token: action.payload.token,
         user: {
           ...action.payload.user,
+        },
+      };
+    case PROFILE_UPDATED:
+      return {
+        ...state,
+        user: {
+          ...action.user,
         },
       };
     case LOGOUT:

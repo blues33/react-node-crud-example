@@ -11,6 +11,8 @@ import {
   USER_UPDATED,
   DELETE_USER,
   USER_DELETED,
+  UPDATE_PROFILE,
+  PROFILE_UPDATED,
 } from '../global/constants';
 import { authorizedRequest } from '../utils/api';
 
@@ -47,6 +49,17 @@ function* updateUser(action) {
   }
 }
 
+function* updateProfile(action) {
+  try {
+    const response = yield call(authorizedRequest, 'post', `/users/profile`, { body: action.data });
+    yield put({ type: PROFILE_UPDATED, user: response.data.data });
+    yield call(toastr.success, '', 'Successfully updated your information');
+  } catch (error) {
+    console.log('update user error: ', error);
+    yield call(toastr.error, 'Error', error.response.data.data);
+  }
+}
+
 function* deleteUser(action) {
   try {
     const response = yield call(authorizedRequest, 'delete', `/users/${action.id}`);
@@ -63,6 +76,7 @@ export default function* adminSaga() {
     yield takeLatest(GET_ALL_USERS, getAllUsers),
     yield takeLatest(ADD_USER, addUser),
     yield takeLatest(UPDATE_USER, updateUser),
+    yield takeLatest(UPDATE_PROFILE, updateProfile),
     yield takeLatest(DELETE_USER, deleteUser),
   ]);
 }

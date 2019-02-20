@@ -8,6 +8,7 @@ import {
   ADD_USER,
   DELETE_USER,
   UPDATE_USER,
+  UPDATE_PROFILE,
 } from '../global/constants';
 
 export const startLoading = () => ({
@@ -49,4 +50,9 @@ export const deleteUser = (id) => ({
 export const updateUser = (user) => ({
   type: UPDATE_USER,
   user,
+});
+
+export const updateProfile = (user) => ({
+  type: UPDATE_PROFILE,
+  data: user,
 });

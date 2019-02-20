@@ -17,6 +17,11 @@ const getNavigationItems = (role) => {
       icon: 'icon-menu',
     });
   }
+  navItems.push({
+    name: 'Profile',
+    url: '/profile',
+    icon: 'user',
+  });
 
   return {
     items: navItems,

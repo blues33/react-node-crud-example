@@ -242,3 +242,28 @@ export const deleteUser = async(req, res, next) => {
     next(err);
   }
 }
+
+export const updateProfile = async (req, res, next) => {
+  const inputSchema = Joi.object().keys({
+    email: Joi.string().email(),
+    fullname : Joi.string().max(255),
+  });
+
+  try {
+    const data = await Joi.validate(req.body, inputSchema);
+
+    _.assign(req.user, data);
+    await req.user.save();
+
+    res.send( response(true, req.user) );
+
+  } catch (err) {
+    if (err.name === 'MongoError' && err.code === 11000) {
+      res.status(400).send(
+        response(false, "Email is already used by other user")
+      );
+    }
+    next(err);
+  }
+
+}
