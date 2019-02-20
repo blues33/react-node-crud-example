@@ -14,7 +14,7 @@ const RestaurantSchema = mongoose.Schema({
   },
   rateAvg: {
     type: Number,
-    default: -1,
+    default: 0,
   },
   highestReview: {
     type: mongoose.Schema.Types.ObjectId,

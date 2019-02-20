@@ -14,7 +14,7 @@ function* login(action) {
   try {
     const loginReponse = yield call(anonymousRequest, 'post', '/users/login', { body: action.payload });
     yield put({ type: LOGIN_SUCCESS, payload: loginReponse.data.data });
-    yield call(toastr.success, '', 'Logged in successfully');
+    yield call(toastr.success, '', 'Login success');
     yield put(push('/'));
   } catch (error) {
     console.log(error.toString());

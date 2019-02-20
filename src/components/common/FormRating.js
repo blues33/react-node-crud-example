@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormGroup, Label, FormFeedback } from 'reactstrap';
 import StarRatings from 'react-star-ratings';
-import { isFileExcluded } from 'tslint/lib/configuration';
 
 const renderStarRating = ({
   input,

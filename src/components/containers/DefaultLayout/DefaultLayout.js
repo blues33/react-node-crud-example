@@ -21,7 +21,6 @@ import {
 import getNavigationItems from "../../../_nav";
 // routes config
 import routes from "../../../routes";
-import DefaultAside from "./DefaultAside";
 import DefaultFooter from "./DefaultFooter";
 import DefaultHeader from "./DefaultHeader";
 import { logout } from "../../../actions/user";
@@ -63,9 +62,6 @@ class DefaultLayout extends Component {
               </Switch>
             </Container>
           </main>
-          <AppAside fixed hidden>
-            <DefaultAside />
-          </AppAside>
         </div>
         <AppFooter>
           <DefaultFooter />

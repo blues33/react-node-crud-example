@@ -18,7 +18,7 @@ import { authorizedRequest } from '../utils/api';
 
 function* getAllRestaurants(action) {
   try {
-    const response = yield call(authorizedRequest, 'get', '/restaurants');
+    const response = yield call(authorizedRequest, 'get', `/restaurants?operator=${action.query.operand}&rate=${action.query.filterRate}`);
     yield put({ type: SET_RESTAURANTS_LIST, payload: response.data.data });
   } catch (error) {
     console.log('get restaurants error: ', error);
@@ -37,7 +37,6 @@ function* getRestaurant(action) {
 function* addRestaurant(action) {
   try {
     const response = yield call(authorizedRequest, 'post', '/restaurants', { body: action.restaurant });
-    yield put({ type: RESTAURANT_ADDED, restaurant: response.data.data });
     yield put(push('/restaurants'));
   } catch (error) {
     console.log('add restaurant error: ', error);
@@ -48,7 +47,6 @@ function* addRestaurant(action) {
 function* updateRestaurant(action) {
   try {
     const response = yield call(authorizedRequest, 'put', `/restaurants/${action.restaurant.id}`, { body: action.restaurant });
-    yield put({ type: RESTAURANT_UPDATED, restaurant: response.data.data });
     yield put(push('/restaurants'));
   } catch (error) {
     console.log('edit restaurant error: ', error);
@@ -59,7 +57,7 @@ function* updateRestaurant(action) {
 function* deleteRestaurant(action) {
   try {
     const response = yield call(authorizedRequest, 'delete', `/restaurants/${action.id}`);
-    yield put({ type: RESTAURANT_DELETED, restaurant: response.data.data });
+    yield call(action.callback, true);
   } catch (error) {
     console.log('delete restaurant error: ', error);
     yield call(toastr.error, 'Error', 'Could not delete the restaurant');

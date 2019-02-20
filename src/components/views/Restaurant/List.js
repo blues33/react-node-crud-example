@@ -1,11 +1,19 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Button, Table } from 'reactstrap';
+import { Button, Table, Input } from 'reactstrap';
 import StarRatings from 'react-star-ratings';
 
 import ConfirmModal from '../../common/ConfirmModal';
 import { getRestaurantsList, deleteRestaurant } from '../../../actions/restaurants';
 import { getUsers } from '../../../actions/user';
+
+const operandList = [
+  { value: 'gte', label: '>=' },
+  { value: 'gt', label: '>' },
+  { value: 'eq', label: '=' },
+  { value: 'lt', label: '<' },
+  { value: 'lte', label: '<=' },
+];
 
 class Restaurants extends React.Component {
   constructor(props) {
@@ -13,11 +21,16 @@ class Restaurants extends React.Component {
     this.state = {
       isModalOpen: false,
       delRestaurant: null,
+      filterOperand: 'gte',
+      filterValue: 0,
     };
   }
 
   componentDidMount() {
-    this.props.getRestaurantsList();
+    this.props.getRestaurantsList({
+      operand: this.state.filterOperand,
+      filterRate: this.state.filterValue,
+    });
     if (this.props.user.role === 'admin') {
       this.props.getUsers();
     }
@@ -26,6 +39,22 @@ class Restaurants extends React.Component {
   onAdd = () => {
     this.props.history.push('/add-restaurant');
   };
+
+  onFilterOptionChange = (e) => {
+    this.setState({filterOperand: e.target.value});
+    this.props.getRestaurantsList({
+      operand: e.target.value,
+      filterRate: this.state.filterValue,
+    });
+  }
+
+  onFilterValueChange = e => {
+    this.setState({filterValue: e.target.value});
+    this.props.getRestaurantsList({
+      operand: this.state.filterOperand,
+      filterRate: e.target.value,
+    });
+  }
 
   onEdit = (restaurant) => {
     this.props.history.push(`/edit-restaurant/${restaurant._id}`);
@@ -52,7 +81,14 @@ class Restaurants extends React.Component {
     this.setState({
       isModalOpen: false
     })
-    this.props.deleteRestaurant(this.state.delRestaurant._id);
+    this.props.deleteRestaurant(this.state.delRestaurant._id, (success) => {
+      if (success) {
+        this.props.getRestaurantsList({
+          operand: this.state.filterOperand,
+          filterRate: this.state.filterValue,
+        });
+      }
+    });
   }
 
   onCancelDelete = () => {
@@ -65,11 +101,26 @@ class Restaurants extends React.Component {
     const { user, restaurants } = this.props;
     return (
       <div className="animated fadeIn h-100 w-100">
-        { ['admin', 'owner'].indexOf(user.role) >= 0 && 
-          <Button color="primary" onClick={this.onAdd} className="m-b-20">
+        <div className="space-between m-b-20">
+        { ['admin', 'owner'].indexOf(user.role) >= 0 ? 
+          <Button color="primary" onClick={this.onAdd}>
             Add
           </Button>
+          : <div />
         }
+          <div className="filter d-flex">
+            <span className="filter-label m-r-10">Filter by rate </span>
+            <Input className="p-l-10 p-r-10" type="select" value={this.state.filterOperand} onChange={this.onFilterOptionChange} >
+              {operandList.map((item, index) => (
+                <option key={index} value={item.value}>
+                  {item.label}
+                </option>
+              ))}
+            </Input>
+            <Input type="number" value={this.state.filterValue} onChange={this.onFilterValueChange} className="m-l-10" />
+          </div>
+        </div>
+        {restaurants.length > 0 ?
         <Table bordered>
           <thead>
             <tr>
@@ -127,6 +178,8 @@ class Restaurants extends React.Component {
             ))}
           </tbody>
         </Table>
+        : <div className="align-center"><h4>No result found</h4></div>
+        }
 
         <ConfirmModal
           isOpen={this.state.isModalOpen}
@@ -150,7 +203,7 @@ export default connect(
   }),
   dispatch => ({
     getUsers: () => dispatch(getUsers()),
-    getRestaurantsList: () => dispatch(getRestaurantsList()),
-    deleteRestaurant: (id) => dispatch(deleteRestaurant(id)),
+    getRestaurantsList: (values) => dispatch(getRestaurantsList(values)),
+    deleteRestaurant: (id, callback) => dispatch(deleteRestaurant(id, callback)),
   }),
 )(Restaurants);

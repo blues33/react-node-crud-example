@@ -6,8 +6,9 @@ import {
   GET_RESTAURANT,
 } from '../global/constants';
 
-export const getRestaurantsList = () => ({
+export const getRestaurantsList = (values) => ({
   type: GET_ALL_RESTAURANTS,
+  query: values,
 });
 
 export const addRestaurant = (restaurant) => ({
@@ -15,9 +16,10 @@ export const addRestaurant = (restaurant) => ({
   restaurant,
 });
 
-export const deleteRestaurant = (id) => ({
+export const deleteRestaurant = (id, callback) => ({
   type: DELETE_RESTAURANT,
   id,
+  callback,
 });
 
 export const updateRestaurant = (restaurant) => ({

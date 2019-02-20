@@ -44,7 +44,8 @@ export const getRestaurants = async (req, res, next) => {
     const restaurants = await Restaurant.find(options).populate({
       path: 'owner',
       select: '-password'
-    }).populate('highestReview lowestReview');
+    }).populate('highestReview lowestReview')
+    .sort({rateAvg: -1});
 
     res.send( response(true, restaurants) );
   } catch(err) {

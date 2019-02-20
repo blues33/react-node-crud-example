@@ -17,6 +17,8 @@ import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 // Import React Redux Toastr Style
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
+// Import React Datepicker Style
+import "react-datepicker/dist/react-datepicker.css";
 // Import Main styles for this application
 import "../global/scss/style.css";
 

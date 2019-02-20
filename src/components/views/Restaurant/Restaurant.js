@@ -12,6 +12,7 @@ import ConfirmModal from '../../common/ConfirmModal';
 import { getRestaurantInfo } from '../../../actions/restaurants';
 import { addReview, getReviewsList, updateReview, deleteReview } from '../../../actions/reviews';
 import { reviewFormValidate } from '../../../utils/validate';
+import renderDatePicker from '../../common/FormDatepicker';
 
 export class Restaurant extends React.Component {
 
@@ -277,9 +278,9 @@ export class Restaurant extends React.Component {
                     />
                     <Field
                       name="visited"
-                      type="date"
                       label="Date visited"
-                      component={renderInput}
+                      maxDate={new Date()}
+                      component={renderDatePicker}
                     />
                     <Field
                       name="comment"

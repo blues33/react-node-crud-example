@@ -10553,6 +10553,12 @@ body {
 .m-b-30 {
   margin-bottom: 30px; }
 
+.p-l-10 {
+  padding-left: 10px; }
+
+.p-r-10 {
+  padding-right: 10px; }
+
 .main {
   display: flex;
   flex-direction: column;
@@ -10584,6 +10590,13 @@ body {
 .align-end {
   display: flex;
   justify-content: flex-end; }
+
+.filter {
+  display: flex;
+  align-items: center; }
+
+.filter-label {
+  white-space: nowrap; }
 
 html body .app.flex-row.align-items-center {
   height: 100vh; }

@@ -32,6 +32,12 @@
 .m-b-30 {
   margin-bottom: 30px;
 }
+.p-l-10 {
+  padding-left: 10px;
+}
+.p-r-10 {
+  padding-right: 10px;
+}
 
 .main {
   display: flex;
@@ -73,4 +79,13 @@
 .align-end {
   display: flex;
   justify-content: flex-end;
+}
+
+.filter {
+  display: flex;
+  align-items: center;
+}
+
+.filter-label {
+  white-space: nowrap;
 }
