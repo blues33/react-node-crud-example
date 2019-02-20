@@ -1,18 +1,19 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Button, Card, CardBody, CardFooter, Input, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Field, reduxForm } from 'redux-form';
 import StarRatings from 'react-star-ratings';
 import moment from 'moment';
 
 import { fetchPendingReviews, submitReply } from '../../../actions/reviews';
+import { replyFormValidate } from '../../../utils/validate';
+import renderInput from '../../common/FormInput';
 
 class PendingReviews extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isModalOpen: false,
-      selectedReview: null,
-      replyText: '',
     };
   }
 
@@ -21,10 +22,10 @@ class PendingReviews extends React.Component {
   }
 
   reply = (review) => {
+    this.props.reset();
+    this.props.change('reviewId', review._id);
     this.setState({
       isModalOpen: true,
-      selectedReview: review,
-      replyText: '',
     });
   }
 
@@ -34,17 +35,8 @@ class PendingReviews extends React.Component {
     });
   }
 
-  onReplyChange = (e) => {
-    this.setState({
-      replyText: e.target.value,
-    });
-  }
-
-  submitReply = () => {
-    this.props.submitReply({
-      replyComment: this.state.replyText,
-      reviewId: this.state.selectedReview._id,
-    });
+  submitReply = (e) => {
+    this.props.handleSubmit(e);
     this.setState({
       isModalOpen: false
     });
@@ -82,7 +74,12 @@ class PendingReviews extends React.Component {
         <Modal isOpen={this.state.isModalOpen}>
           <ModalHeader toggle={this.toggle}>Reply</ModalHeader>
           <ModalBody>
-            <Input type="textarea" className="form-control" placeholder="Reply comment here..." value={this.state.replyText} onChange={this.onReplyChange} />
+            <Field
+              name="replyComment"
+              type="textarea"
+              label="Reply comment"
+              component={renderInput}
+            />
           </ModalBody>
           <ModalFooter>
             <Button color="primary" onClick={this.submitReply}>Reply</Button>{' '}
@@ -94,6 +91,14 @@ class PendingReviews extends React.Component {
   }
 }
 
+const ReduxForm = reduxForm({
+  form: 'ReplyForm',
+  onSubmit: (values, dispatch, props) => {
+    props.submitReply(values);
+  },
+  validate: replyFormValidate,
+})(PendingReviews);
+
 export default connect(
   ({ reviews, authentication, }) => ({
     ...reviews,
@@ -103,4 +108,4 @@ export default connect(
     fetchReviews: (userId) => dispatch(fetchPendingReviews(userId)),
     submitReply: (reply) => dispatch(submitReply(reply)),
   }),
-)(PendingReviews);
+)(ReduxForm);

@@ -131,6 +131,12 @@ export const createReview = async (req, res, next) => {
 }
 
 export const updateReview = async (req, res, next) => {
+  if (req.user.role !== 'admin') {
+    res.status(403).send(
+      response(false, "Permission denied")
+    );
+    return;
+  }
   const id = req.params.id;
   const obj = {
     rate: Joi.number().greater(0).max(5),
@@ -219,6 +225,12 @@ export const updateReview = async (req, res, next) => {
 }
 
 export const deleteReview = async(req, res, next) => {
+  if (req.user.role !== 'admin') {
+    res.status(403).send(
+      response(false, "Permission denied")
+    );
+    return;
+  }
   const id = req.params.id;
 
   try {

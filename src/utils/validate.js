@@ -81,3 +81,11 @@ export const reviewFormValidate = values => {
   }
   return errors;
 };
+
+export const replyFormValidate = values => {
+  const errors = {};
+  if (!values.comment) {
+    errors.comment = 'Required';
+  }
+  return errors;
+};

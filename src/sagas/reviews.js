@@ -86,7 +86,8 @@ function* fetchPendingReviews(action) {
 function* submitReply(action) {
   try {
     const response = yield call(authorizedRequest, 'post', `/reviews/${action.reviewId}/reply`, {body: {replyComment: action.replyComment} });
-    yield put({ type: GET_ALL_REVIEWS, restaurantId: response.data.data.restaurant });
+    yield put({ type: FETCH_PENDING_REVIEWS });
+    yield put({ type: GET_ALL_REVIEWS, restaurantId: response.data.data.restaurant._id });
     yield call(toastr.success, '', 'Successfully submitted your reply');
   } catch (error) {
     yield call(toastr.error, 'Error', error.response.data.data);
