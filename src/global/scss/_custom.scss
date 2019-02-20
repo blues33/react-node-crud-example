@@ -82,12 +82,15 @@
 }
 
 .filter {
-  display: flex;
-  align-items: center;
-}
+  width: 200px;
 
-.filter-label {
-  white-space: nowrap;
+  .filter-label {
+    white-space: nowrap;
+  }
+
+  .filter-value {
+    min-width: 20px;
+  }
 }
 
 .custom-form-group > .invalid-feedback {

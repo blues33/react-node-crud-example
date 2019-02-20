@@ -15,7 +15,7 @@ import { authorizedRequest } from '../utils/api';
 
 function* getAllRestaurants(action) {
   try {
-    const response = yield call(authorizedRequest, 'get', `/restaurants?operator=${action.query.operand}&rate=${action.query.filterRate}`);
+    const response = yield call(authorizedRequest, 'get', `/restaurants?min=${action.query.min}&max=${action.query.max}`);
     yield put({ type: SET_RESTAURANTS_LIST, payload: response.data.data });
   } catch (error) {
     console.log('get restaurants error: ', error);

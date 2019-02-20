@@ -19,6 +19,8 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
 // Import React Datepicker Style
 import "react-datepicker/dist/react-datepicker.css";
+// Import React Slider Style
+import 'rc-slider/assets/index.css';
 // Import Main styles for this application
 import "../global/scss/style.css";
 

@@ -10592,11 +10592,11 @@ body {
   justify-content: flex-end; }
 
 .filter {
-  display: flex;
-  align-items: center; }
-
-.filter-label {
-  white-space: nowrap; }
+  width: 200px; }
+  .filter .filter-label {
+    white-space: nowrap; }
+  .filter .filter-value {
+    min-width: 20px; }
 
 .custom-form-group > .invalid-feedback {
   display: block; }

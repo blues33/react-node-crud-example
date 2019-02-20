@@ -31,11 +31,10 @@ export const getRestaurants = async (req, res, next) => {
   try {
     let options = {};
 
-    if (req.query.rate) {
-      const operator = `$${req.query.operator}`;
-      options.rateAvg = { [operator]: req.query.rate }
-    }
-    const role = req.user.role;
+    options['$and'] = [
+      { rateAvg: { '$gte': req.query.min || 0 } },
+      { rateAvg: { '$lte': req.query.max || 5 } },
+    ];
 
     if (req.user.role === 'owner') {
       options.owner = req.user._id;

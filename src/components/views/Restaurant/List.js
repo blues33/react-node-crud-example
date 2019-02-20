@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Button, Table, Input } from 'reactstrap';
 import StarRatings from 'react-star-ratings';
+import Slider from 'rc-slider';
 
 import ConfirmModal from '../../common/ConfirmModal';
 import { getRestaurantsList, deleteRestaurant } from '../../../actions/restaurants';
@@ -21,15 +22,15 @@ class Restaurants extends React.Component {
     this.state = {
       isModalOpen: false,
       delRestaurant: null,
-      filterOperand: 'gte',
-      filterValue: 0,
+      maxRate: 5,
+      minRate: 0,
     };
   }
 
   componentDidMount() {
     this.props.getRestaurantsList({
-      operand: this.state.filterOperand,
-      filterRate: this.state.filterValue,
+      min: this.state.minRate,
+      max: this.state.maxRate,
     });
     if (this.props.user.role === 'admin') {
       this.props.getUsers();
@@ -40,19 +41,14 @@ class Restaurants extends React.Component {
     this.props.history.push('/add-restaurant');
   };
 
-  onFilterOptionChange = (e) => {
-    this.setState({filterOperand: e.target.value});
-    this.props.getRestaurantsList({
-      operand: e.target.value,
-      filterRate: this.state.filterValue,
+  onFilterValueChange = values => {
+    this.setState({
+      minRate: values[0],
+      maxRate: values[1],
     });
-  }
-
-  onFilterValueChange = e => {
-    this.setState({filterValue: e.target.value});
     this.props.getRestaurantsList({
-      operand: this.state.filterOperand,
-      filterRate: e.target.value,
+      min: values[0],
+      max: values[1],
     });
   }
 
@@ -101,23 +97,27 @@ class Restaurants extends React.Component {
     const { user, restaurants } = this.props;
     return (
       <div className="animated fadeIn h-100 w-100">
-        <div className="space-between m-b-20">
+        <div className="space-between m-b-20 align-middle">
         { ['admin', 'owner'].indexOf(user.role) >= 0 ? 
           <Button color="primary" onClick={this.onAdd}>
             Add
           </Button>
           : <div />
         }
-          <div className="filter d-flex">
-            <span className="filter-label m-r-10">Filter by rate </span>
-            <Input className="p-l-10 p-r-10" type="select" value={this.state.filterOperand} onChange={this.onFilterOptionChange} >
-              {operandList.map((item, index) => (
-                <option key={index} value={item.value}>
-                  {item.label}
-                </option>
-              ))}
-            </Input>
-            <Input type="number" value={this.state.filterValue} onChange={this.onFilterValueChange} className="m-l-10" />
+          <div className="filter">
+            <div className="filter-label">Filter by rate </div>
+            <div className="m-t-5 align-middle">
+              <span className="m-r-10 filter-value">{this.state.minRate}</span>
+              <Slider.Range
+                min={0}
+                max={5}
+                step={0.5}
+                defaultValue={[0, 5]}
+                railStyle={{ backgroundColor: 'grey' }}
+                trackStyle={[{ backgroundColor: 'red' }, { backgroundColor: 'green' }]}
+                onChange={this.onFilterValueChange} />
+              <span className="m-l-10 filter-value">{this.state.maxRate}</span>
+            </div>
           </div>
         </div>
         {restaurants.length > 0 ?
