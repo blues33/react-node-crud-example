@@ -18,7 +18,6 @@ function* getAllRestaurants(action) {
     const response = yield call(authorizedRequest, 'get', `/restaurants?operator=${action.query.operand}&rate=${action.query.filterRate}`);
     yield put({ type: SET_RESTAURANTS_LIST, payload: response.data.data });
   } catch (error) {
-    yield call(toastr.error, 'Error', error.response.data.data);
     console.log('get restaurants error: ', error);
   }
 }
@@ -28,7 +27,6 @@ function* getRestaurant(action) {
     const response = yield call(authorizedRequest, 'get', `/restaurants/${action.id}`);
     yield put({ type: SET_CURRENT_RESTAURANT, restaurant: response.data.data });
   } catch (error) {
-    yield call(toastr.error, 'Error', error.response.data.data);
     console.log('get restaurant error: ', error);
   }
 }

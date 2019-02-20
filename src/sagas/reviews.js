@@ -22,7 +22,6 @@ function* getAllReviews(action) {
     const response = yield call(authorizedRequest, 'get', `/reviews?restaurant=${action.restaurantId}`);
     yield put({ type: SET_REVIEWS, reviews: response.data.data });
   } catch (error) {
-    yield call(toastr.error, 'Error', error.response.data.data);
     console.log('get reviews error: ', error);
   }
 }
@@ -32,7 +31,6 @@ function* getReview(action) {
     const response = yield call(authorizedRequest, 'get', `/reviews/${action.id}`);
     yield put({ type: SET_CURRENT_REVIEW, review: response.data.data });
   } catch (error) {
-    yield call(toastr.error, 'Error', error.response.data.data);
     console.log('get review error: ', error);
   }
 }

@@ -20,7 +20,6 @@ function* getAllUsers(action) {
     yield put({ type: SET_USERS_LIST, users: response.data.data });
   } catch (error) {
     console.log('get users error: ', error);
-    yield call(toastr.error, 'Error', error.response.data.data);
   }
 }
 
