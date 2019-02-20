@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Button, Table, Input } from 'reactstrap';
+import { Button } from 'reactstrap';
 import StarRatings from 'react-star-ratings';
 import Slider from 'rc-slider';
+import BootstrapTable from 'react-bootstrap-table-next';
+import paginationFactory from 'react-bootstrap-table2-paginator';
 
 import ConfirmModal from '../../common/ConfirmModal';
 import { getRestaurantsList, deleteRestaurant } from '../../../actions/restaurants';
@@ -38,7 +40,7 @@ class Restaurants extends React.Component {
   }
 
   onAdd = () => {
-    this.props.history.push('/add-restaurant');
+    this.props.history.push('/restaurant/add');
   };
 
   onFilterValueChange = values => {
@@ -53,11 +55,11 @@ class Restaurants extends React.Component {
   }
 
   onEdit = (restaurant) => {
-    this.props.history.push(`/edit-restaurant/${restaurant._id}`);
+    this.props.history.push(`/restaurant/edit/${restaurant._id}`);
   };
 
   viewRestaurant = (restaurant) => {
-    this.props.history.push(`/restaurant/${restaurant._id}`);
+    this.props.history.push(`/restaurant/detail/${restaurant._id}`);
   }
 
   onDelete = (restaurant) => {
@@ -95,6 +97,58 @@ class Restaurants extends React.Component {
 
   render() {
     const { user, restaurants } = this.props;
+    const columns = [{
+      dataField: '_id',
+      text: '#',
+      formatter: (cell, row, rowIndex) => rowIndex,
+      classes: 'column-number',
+      headerClasses: 'column-number'
+    },
+    {
+      dataField: 'name',
+      text: 'Name',
+      sort: true,
+    }, {
+      dataField: 'owner.fullname',
+      text: 'Owner',
+      sort: true,
+    }, {
+      dataField: 'rateAvg',
+      text: 'Average rating',
+      sort: true,
+      formatter: (cell, row, rowIndex) => cell > 0 ? (
+        <StarRatings
+          rating={cell}
+          starRatedColor="rgb(230, 67, 47)"
+          starDimension="20px"
+          starSpacing="0px"
+        />
+        ) : <i>No review</i>,
+      classes: 'td-rating',
+      headerClasses: 'td-rating',
+    }, {
+      dataField: '',
+      text: 'Actions',
+      formatter: (cell, row, rowIndex) => (
+        <>
+        <Button color="primary" className="m-l-5 m-r-5 m-b-10" onClick={() => this.viewRestaurant(row)}>
+          View
+        </Button>
+        {user.role !== 'regular' && 
+        <>
+        <Button color="warning" className="m-l-5 m-r-5 m-b-10" onClick={() => this.onEdit(row)}>
+          Edit
+        </Button>
+        <Button color="danger" onClick={() => this.onDelete(row)} className="m-l-5 m-r-5 m-b-10">
+          Delete
+        </Button>
+        </>
+        }
+        </>
+      ),
+      align: 'center',
+      headerAlign: 'center'
+    }];
     return (
       <div className="animated fadeIn h-100 w-100">
         <div className="space-between m-b-20 align-middle">
@@ -120,66 +174,16 @@ class Restaurants extends React.Component {
             </div>
           </div>
         </div>
-        {restaurants.length > 0 ?
-        <Table bordered>
-          <thead>
-            <tr>
-              <th className="align-center">#</th>
-              <th>Name</th>
-              <th>Owner</th>
-              <th>Average rating</th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {restaurants.map((restaurant, index) => (
-              <tr key={index} className="cursor-pointer">
-                <td scope="row" className="align-center">{index + 1}</td>
-                <td>{restaurant.name}</td>
-                <td>{restaurant.owner.fullname}</td>
-                <td>
-                  {restaurant.rateAvg > 0 ?
-                  <StarRatings
-                    rating={restaurant.rateAvg}
-                    starRatedColor="rgb(230, 67, 47)"
-                    starDimension="20px"
-                    starSpacing="0px"
-                  />
-                  : <i>No review</i>
-                  }
-                </td>
-                <td className="align-center">
-                  <Button
-                    color="primary"
-                    onClick={() => this.viewRestaurant(restaurant)}
-                  >
-                    View
-                  </Button>
-                  {user.role !== 'regular' && 
-                  <>
-                  <Button
-                    color="warning"
-                    className="m-l-20"
-                    onClick={() => this.onEdit(restaurant)}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    color="danger"
-                    onClick={() => this.onDelete(restaurant)}
-                    className="m-l-20"
-                  >
-                    Delete
-                  </Button>
-                  </>
-                  }
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-        : <div className="align-center"><h4>No result found</h4></div>
-        }
+        <BootstrapTable
+          bootstrap4
+          keyField='_id'
+          data={ restaurants }
+          columns={ columns }
+          pagination={ paginationFactory() }
+          noDataIndication="No result found"
+          striped
+          hover
+        />
 
         <ConfirmModal
           isOpen={this.state.isModalOpen}

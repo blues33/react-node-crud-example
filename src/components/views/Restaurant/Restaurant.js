@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { Button, Row, Col, Label, FormGroup, Card, CardBody, CardHeader, CardFooter, 
-  Modal, ModalHeader, ModalBody, ModalFooter, Input, FormFeedback } from 'reactstrap';
+  Modal, ModalHeader, ModalBody, ModalFooter, Input, FormFeedback, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import { Field, reduxForm } from 'redux-form';
 import _ from 'lodash';
 import moment from 'moment';
@@ -135,6 +136,11 @@ export class Restaurant extends React.Component {
   render() {
     return (
       <div className="animated fadeIn h-100 w-100">
+        <Breadcrumb>
+          {/*eslint-disable-next-line*/}
+          <BreadcrumbItem><Link to="/restaurants">Restaurants</Link></BreadcrumbItem>
+          <BreadcrumbItem active>{this.props.restaurant ? this.props.restaurant.name : 'Not found'}</BreadcrumbItem>
+        </Breadcrumb>
       {this.props.restaurant ?
         <Row>
           <Col xs="12" md={this.props.user.role === 'regular' ? 6 : 12}>

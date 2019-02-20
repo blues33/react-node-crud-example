@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button } from 'reactstrap';
 import { Field, reduxForm } from 'redux-form';
+import { Link } from 'react-router-dom';
+import { Button, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import _ from 'lodash';
 
 import renderInput from '../../common/FormInput';
@@ -16,6 +17,10 @@ export class EditUserForm extends React.Component {
   render() {
     return (
       <div className="animated fadeIn h-100 w-100">
+        <Breadcrumb>
+          <BreadcrumbItem><Link to="/users">Users</Link></BreadcrumbItem>
+          <BreadcrumbItem active>{this.props.initialValues.fullname}</BreadcrumbItem>
+        </Breadcrumb>
         <h2>Edit user</h2>
         <Field
           name="email"

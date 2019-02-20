@@ -10535,6 +10535,9 @@ body {
 .m-l-10 {
   margin-left: 10px; }
 
+.m-l-5 {
+  margin-left: 5px; }
+
 .m-r-20 {
   margin-right: 20px; }
 
@@ -10562,6 +10565,7 @@ body {
 .main {
   display: flex;
   flex-direction: column;
+  padding-top: 30px;
   padding-bottom: 20px; }
   .main .container-fluid {
     flex-grow: 1; }
@@ -10573,7 +10577,15 @@ body {
   cursor: not-allowed; }
 
 .table td {
-  vertical-align: middle; }
+  vertical-align: middle;
+  overflow: hidden; }
+
+.td-rating {
+  width: 160px; }
+
+.column-number {
+  width: 80px;
+  text-align: center; }
 
 .align-center {
   text-align: center;

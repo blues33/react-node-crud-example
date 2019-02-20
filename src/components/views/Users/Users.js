@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Button, Table } from 'reactstrap';
+import { Button } from 'reactstrap';
 import _ from 'lodash';
+import BootstrapTable from 'react-bootstrap-table-next';
+import paginationFactory from 'react-bootstrap-table2-paginator';
 
 import ConfirmModal from '../../common/ConfirmModal';
 import { getUsers, deleteUser } from '../../../actions/user';
@@ -20,11 +22,11 @@ class Users extends React.Component {
   }
 
   onAdd = () => {
-    this.props.history.push('/add-user');
+    this.props.history.push('/user/new');
   };
 
   onEdit = (user) => {
-    this.props.history.push(`/edit-user/${user._id}`);
+    this.props.history.push(`/user/edit/${user._id}`);
   };
 
   onDelete = (user) => {
@@ -55,51 +57,56 @@ class Users extends React.Component {
 
   render() {
     const { user, users } = this.props;
+    const columns = [{
+      dataField: '_id',
+      text: '#',
+      formatter: (cell, row, rowIndex) => rowIndex,
+      classes: 'column-number',
+      headerClasses: 'column-number'
+    },
+    {
+      dataField: 'fullname',
+      text: 'Name',
+      sort: true,
+    }, {
+      dataField: 'email',
+      text: 'Email',
+      sort: true,
+    }, {
+      dataField: 'role',
+      text: 'Role',
+      sort: true,
+    }, {
+      dataField: '',
+      text: 'Actions',
+      formatter: (cell, row, rowIndex) => (
+        <>
+        <Button color="warning" onClick={() => this.onEdit(row)}>
+          Edit
+        </Button>
+        <Button color="danger" onClick={() => this.onDelete(row)} className="m-l-20">
+          Delete
+        </Button>
+        </>
+      ),
+      classes: 'align-center',
+      headerClasses: 'align-center'
+    }];
     return (
       <div className="animated fadeIn h-100 w-100">
         <Button color="primary" onClick={this.onAdd} className="m-b-20">
           Add
         </Button>
-        {users.length > 0 ?
-        <Table bordered>
-          <thead>
-            <tr>
-              <th className="align-center">#</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user, index) => (
-              <tr key={index} className="cursor-pointer">
-                <td scope="row" className="align-center">{index + 1}</td>
-                <td>{user.fullname}</td>
-                <td>{user.email}</td>
-                <td>{_.startCase(_.toLower(user.role))}</td>
-                <td className="align-center">
-                  <Button
-                    color="warning"
-                    onClick={() => this.onEdit(user)}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    color="danger"
-                    onClick={() => this.onDelete(user)}
-                    className="m-l-20"
-                  >
-                    Delete
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-        : <div className="align-center"><h4>No users found</h4></div>
-        }
-
+        <BootstrapTable
+          bootstrap4
+          keyField='_id'
+          data={ users }
+          columns={ columns }
+          pagination={ paginationFactory() }
+          noDataIndication="No user found"
+          striped
+          hover
+        />
         <ConfirmModal
           isOpen={this.state.isModalOpen}
           type="danger"

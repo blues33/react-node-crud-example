@@ -14,6 +14,9 @@
 .m-l-10 {
   margin-left: 10px;
 }
+.m-l-5 {
+  margin-left: 5px;
+}
 .m-r-20 {
   margin-right: 20px;
 }
@@ -42,6 +45,7 @@
 .main {
   display: flex;
   flex-direction: column;
+  padding-top: 30px;
   padding-bottom: 20px;
 
   .container-fluid {
@@ -59,6 +63,16 @@
 
 .table td {
   vertical-align: middle;
+  overflow: hidden;
+}
+
+.td-rating {
+  width: 160px;
+}
+
+.column-number {
+  width: 80px;
+  text-align: center;
 }
 
 .align-center {

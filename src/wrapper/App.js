@@ -21,6 +21,8 @@ import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
 import "react-datepicker/dist/react-datepicker.css";
 // Import React Slider Style
 import 'rc-slider/assets/index.css';
+// Import React Bootstrap Table Style
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 // Import Main styles for this application
 import "../global/scss/style.css";
 

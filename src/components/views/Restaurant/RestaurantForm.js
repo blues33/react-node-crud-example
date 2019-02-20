@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button } from 'reactstrap';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { Button, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import { Field, reduxForm } from 'redux-form';
 import _ from 'lodash';
 
@@ -43,6 +44,10 @@ export class RestaurantForm extends React.Component {
     
     return (
       <div className="animated fadeIn h-100 w-100">
+        <Breadcrumb>
+          <BreadcrumbItem><Link to="/restaurants">Restaurants</Link></BreadcrumbItem>
+          <BreadcrumbItem active>New</BreadcrumbItem>
+        </Breadcrumb>
         <h2>Add a new restaurant</h2>
         { this.props.user.role === 'admin' && 
         <Field

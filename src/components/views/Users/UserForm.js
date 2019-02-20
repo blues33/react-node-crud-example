@@ -1,7 +1,8 @@
 import React from 'react';
-import { Button } from 'reactstrap';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
+import { Link } from 'react-router-dom';
+import { Button, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import _ from 'lodash';
 
 import renderInput from '../../common/FormInput';
@@ -30,6 +31,10 @@ export class UserForm extends React.Component {
   render() {
     return (
       <div className="animated fadeIn h-100 w-100">
+        <Breadcrumb>
+          <BreadcrumbItem><Link to="/users">Users</Link></BreadcrumbItem>
+          <BreadcrumbItem active>New</BreadcrumbItem>
+        </Breadcrumb>
         <h2>Create new user</h2>
         <Field
           name="role"
