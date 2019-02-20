@@ -1,0 +1,76 @@
+// Here you can add other styles
+.m-t-5 {
+  margin-top: 5px;
+}
+.m-t-10 {
+  margin-top: 10px;
+}
+.m-t-30 {
+  margin-top: 30px;
+}
+.m-l-20 {
+  margin-left: 20px;
+}
+.m-l-10 {
+  margin-left: 10px;
+}
+.m-r-20 {
+  margin-right: 20px;
+}
+.m-r-10 {
+  margin-right: 10px;
+}
+.m-r-5 {
+  margin-right: 5px;
+}
+.m-b-10 {
+  margin-bottom: 10px;
+}
+.m-b-20 {
+  margin-bottom: 20px;
+}
+.m-b-30 {
+  margin-bottom: 30px;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 20px;
+
+  .container-fluid {
+    flex-grow: 1;
+  }
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.btn.disabled {
+  cursor: not-allowed;
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+.align-center {
+  text-align: center;
+}
+
+.space-between {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.align-middle {
+  display: flex;
+  align-items: center;
+}
+
+.align-end {
+  display: flex;
+  justify-content: flex-end;
+}

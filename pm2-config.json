@@ -1,0 +1,13 @@
+{
+  "apps": [
+    {
+      "name": "client",
+      "script": "npm",
+      "args": "start"
+    }, {
+      "name" : "api-app",
+      "script" : "npm",
+      "args": "run server"
+    }
+  ]
+}
