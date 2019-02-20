@@ -40,7 +40,6 @@ app.get('/', (req, res) => {
 app.use((err, req, res, next) => {
   if (err) {
     if (err.isJoi) {
-      console.log('errror: ', err)
       res.status(400).send(
         response(false, err.details[0].message)
       );
@@ -49,7 +48,9 @@ app.use((err, req, res, next) => {
         response(false, 'Can\'t find the ' + err.model.modelName.toLowerCase())
       );
     } else {
-      res.status(err.status || 500).send(err);
+      res.status(err.status || 500).send(
+        response(false, err.errmsg)
+      );
     }
   } else {
     next();

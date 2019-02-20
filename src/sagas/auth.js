@@ -17,8 +17,7 @@ function* login(action) {
     yield call(toastr.success, '', 'Login success');
     yield put(push('/'));
   } catch (error) {
-    console.log(error.toString());
-    yield call(toastr.error, 'Error', 'Invalid email or password');
+    yield call(toastr.error, 'Error', error.response.data.data);
   }
 }
 
@@ -29,8 +28,7 @@ function* register(action) {
     yield call(toastr.success, '', 'Successfully registered your user');
     yield put(push('/'));
   } catch (error) {
-    yield call(toastr.error, 'Error', 'Invalid user information');
-    yield put(push('/'));
+    yield call(toastr.error, 'Error', error.response.data.data);
   }
 }
 

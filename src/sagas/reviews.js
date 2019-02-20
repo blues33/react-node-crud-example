@@ -22,6 +22,7 @@ function* getAllReviews(action) {
     const response = yield call(authorizedRequest, 'get', `/reviews?restaurant=${action.restaurantId}`);
     yield put({ type: SET_REVIEWS, reviews: response.data.data });
   } catch (error) {
+    yield call(toastr.error, 'Error', error.response.data.data);
     console.log('get reviews error: ', error);
   }
 }
@@ -31,6 +32,7 @@ function* getReview(action) {
     const response = yield call(authorizedRequest, 'get', `/reviews/${action.id}`);
     yield put({ type: SET_CURRENT_REVIEW, review: response.data.data });
   } catch (error) {
+    yield call(toastr.error, 'Error', error.response.data.data);
     console.log('get review error: ', error);
   }
 }
@@ -43,7 +45,7 @@ function* addReview(action) {
     yield call(toastr.success, '', 'Successfully added your review');
   } catch (error) {
     console.log('add review error: ', error);
-    yield call(toastr.error, 'Error', 'Could not add a new review');
+    yield call(toastr.error, 'Error', error.response.data.data);
   }
 }
 
@@ -55,7 +57,7 @@ function* updateReview(action) {
     yield call(toastr.success, '', 'Successfully updated review');
   } catch (error) {
     console.log('edit review error: ', error);
-    yield call(toastr.error, 'Error', 'Could not edit the review');
+    yield call(toastr.error, 'Error', error.response.data.data);
   }
 }
 
@@ -67,7 +69,7 @@ function* deleteReview(action) {
     yield call(toastr.success, '', 'Successfully removed review');
   } catch (error) {
     console.log('delete review error: ', error);
-    yield call(toastr.error, 'Error', 'Could not delete the review');
+    yield call(toastr.error, 'Error', error.response.data.data);
   }
 }
 
@@ -76,6 +78,7 @@ function* fetchPendingReviews(action) {
     const response = yield call(authorizedRequest, 'get', '/reviews/pending');
     yield put({ type: SET_PENDING_REVIEWS, reviews: response.data.data });
   } catch (error) {
+    yield call(toastr.error, 'Error', error.response.data.data);
     console.log('get pending reviews error: ', error);
   }
 }
@@ -86,6 +89,7 @@ function* submitReply(action) {
     yield put({ type: GET_ALL_REVIEWS, restaurantId: response.data.data.restaurant });
     yield call(toastr.success, '', 'Successfully submitted your reply');
   } catch (error) {
+    yield call(toastr.error, 'Error', error.response.data.data);
     console.log('reply error: ', error);
   }
 }

@@ -78,6 +78,11 @@ export const createRestaurant = async (req, res, next) => {
       response(true, restaurant)
     );
   } catch (err) {
+    if (err.name === 'MongoError' && err.code === 11000) {
+      res.status(err.status || 500).send(
+        response(false, "You can't use this name")
+      );
+    }
     next(err);
   }
 
@@ -120,6 +125,11 @@ export const updateRestaurant = async (req, res, next) => {
 
     res.send( response(true, restaurant) );
   } catch (err) {
+    if (err.name === 'MongoError' && err.code === 11000) {
+      res.status(err.status || 500).send(
+        response(false, "You can't use this name")
+      );
+    }
     next(err);
   }
 

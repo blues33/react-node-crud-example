@@ -18,6 +18,7 @@ function* getAllRestaurants(action) {
     const response = yield call(authorizedRequest, 'get', `/restaurants?operator=${action.query.operand}&rate=${action.query.filterRate}`);
     yield put({ type: SET_RESTAURANTS_LIST, payload: response.data.data });
   } catch (error) {
+    yield call(toastr.error, 'Error', error.response.data.data);
     console.log('get restaurants error: ', error);
   }
 }
@@ -27,6 +28,7 @@ function* getRestaurant(action) {
     const response = yield call(authorizedRequest, 'get', `/restaurants/${action.id}`);
     yield put({ type: SET_CURRENT_RESTAURANT, restaurant: response.data.data });
   } catch (error) {
+    yield call(toastr.error, 'Error', error.response.data.data);
     console.log('get restaurant error: ', error);
   }
 }
@@ -38,7 +40,7 @@ function* addRestaurant(action) {
     yield put(push('/restaurants'));
   } catch (error) {
     console.log('add restaurant error: ', error);
-    yield call(toastr.error, 'Error', 'Could not add a new restaurant');
+    yield call(toastr.error, 'Error', error.response.data.data);
   }
 }
 
@@ -49,7 +51,7 @@ function* updateRestaurant(action) {
     yield put(push('/restaurants'));
   } catch (error) {
     console.log('edit restaurant error: ', error);
-    yield call(toastr.error, 'Error', 'Could not edit the restaurant');
+    yield call(toastr.error, 'Error', error.response.data.data);
   }
 }
 
@@ -60,7 +62,7 @@ function* deleteRestaurant(action) {
     yield call(action.callback, true);
   } catch (error) {
     console.log('delete restaurant error: ', error);
-    yield call(toastr.error, 'Error', 'Could not delete the restaurant');
+    yield call(toastr.error, 'Error', error.response.data.data);
   }
 }
 

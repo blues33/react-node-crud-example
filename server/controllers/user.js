@@ -64,6 +64,11 @@ export const register = async (req, res, next) => {
       response(true, { token, user: user.toObject() })
     );
   } catch (err) {
+    if (err.name === 'MongoError' && err.code === 11000) {
+      res.status(err.status || 500).send(
+        response(false, "Email already exists")
+      );
+    }
     next(err);
   }
 };
@@ -88,6 +93,11 @@ export const createUser = async (req, res, next) => {
       response(true, user.toObject())
     );
   } catch (err) {
+    if (err.name === 'MongoError' && err.code === 11000) {
+      res.status(err.status || 500).send(
+        response(false, "Email already exists")
+      );
+    }
     next(err);
   }
 
@@ -182,6 +192,11 @@ export const updateUser = async (req, res, next) => {
     }
 
   } catch (err) {
+    if (err.name === 'MongoError' && err.code === 11000) {
+      res.status(err.status || 500).send(
+        response(false, "Email is already used by other user")
+      );
+    }
     next(err);
   }
 
@@ -214,27 +229,4 @@ export const deleteUser = async(req, res, next) => {
   } catch(err) {
     next(err);
   }
-}
-
-export const updateProfile = async (req, res, next) => {
-
-  const inputSchema = Joi.object().keys({
-    email: Joi.string().email(),
-    fullname : Joi.string().max(255),
-  });
-
-  const id = req.user._id;
-
-  try {
-    const data = await Joi.validate(req.body, inputSchema);
-
-    _.assign(req.user, data);
-    await req.user.save();
-
-    res.send( response(true, 'Profile updated successfully') );
-
-  } catch (err) {
-    next(err);
-  }
-
 }

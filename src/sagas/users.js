@@ -20,6 +20,7 @@ function* getAllUsers(action) {
     yield put({ type: SET_USERS_LIST, users: response.data.data });
   } catch (error) {
     console.log('get users error: ', error);
+    yield call(toastr.error, 'Error', error.response.data.data);
   }
 }
 
@@ -30,6 +31,7 @@ function* addUser(action) {
     yield put(push('/users'));
   } catch (error) {
     console.log('add user error: ', error);
+    yield call(toastr.error, 'Error', error.response.data.data);
   }
 }
 
@@ -40,7 +42,7 @@ function* updateUser(action) {
     yield put(push('/users'));
   } catch (error) {
     console.log('update user error: ', error);
-    yield call(toastr.error, 'Error', 'Could not update the user');
+    yield call(toastr.error, 'Error', error.response.data.data);
   }
 }
 
@@ -50,7 +52,7 @@ function* deleteUser(action) {
     yield put({ type: USER_DELETED, user: response.data.data });
   } catch (error) {
     console.log('delete user error: ', error);
-    yield call(toastr.error, 'Error', 'Could not delete the user');
+    yield call(toastr.error, 'Error', error.response.data.data);
   }
 }
 

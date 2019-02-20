@@ -76,7 +76,7 @@ export const getPendingReviews = async (req, res, next) => {
 export const createReview = async (req, res, next) => {
 
   const reviewSchema = Joi.object().keys({
-    rate: Joi.number(),
+    rate: Joi.number().greater(0).max(5),
     visited: Joi.date(),
     comment: Joi.string().required(),
     restaurant: Joi.string().required(),
@@ -128,13 +128,12 @@ export const createReview = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-
 }
 
 export const updateReview = async (req, res, next) => {
   const id = req.params.id;
   const obj = {
-    rate: Joi.number(),
+    rate: Joi.number().greater(0).max(5),
     comment: Joi.string().required(),
     replyComment: Joi.string().allow(''),
   };
