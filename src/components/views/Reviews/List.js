@@ -51,7 +51,8 @@ class PendingReviews extends React.Component {
           <Card key={`review-${i}`}>
             <CardBody>
               <div className="space-between align-middle">
-                <div><h3>{review.restaurant.name}</h3></div>
+                <div><h4>{review.restaurant.name}</h4></div>
+                <div>{moment(review.created).format('MM-DD-YYYY hh:mm a')}</div>
               </div>
               <div className="space-between align-middle">
                 <div>
@@ -64,7 +65,6 @@ class PendingReviews extends React.Component {
                     />
                     <span className="m-l-20 m-t-5"><strong>{review.user.fullname}</strong> visited on {moment(review.visited).format('MM-DD-YYYY')}</span>
                   </div>
-                  <div className="m-b-10">{moment(review.created).format('MM-DD-YYYY hh:mm a')}</div>
                   <p>{ review.comment }</p>
                 </div>
                 <Button color="primary" onClick={() => this.reply(review)}>Reply</Button>
