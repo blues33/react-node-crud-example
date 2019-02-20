@@ -42,13 +42,18 @@ const EditUserForm = Loadable({
   loading: Loading,
 });
 
+const PendingReviews = Loadable({
+  loader: () => import('./components/views/Reviews/List'),
+  loading: Loading,
+});
+
 const Profile = Loadable({
   loader: () => import('./components/views/Users/Profile'),
   loading: Loading,
 });
 
-const PendingReviews = Loadable({
-  loader: () => import('./components/views/Reviews/List'),
+const Password = Loadable({
+  loader: () => import('./components/views/Users/Password'),
   loading: Loading,
 });
 
@@ -63,6 +68,7 @@ const routes = [
   { path: '/edit-user/:id', name: 'Edit User', component: EditUserForm, roles: ['admin'] },
   { path: '/reviews-pending', name: 'Pending Reviews', component: PendingReviews, roles: ['owner'] },
   { path: '/profile', name: 'Edit User', component: Profile },
+  { path: '/password', name: 'Change Password', component: Password },
 ];
 
 export default routes;

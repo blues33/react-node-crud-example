@@ -49,7 +49,7 @@ app.use((err, req, res, next) => {
       );
     } else {
       res.status(err.status || 500).send(
-        response(false, err.errmsg)
+        response(false, JSON.stringify(err))
       );
     }
   } else {

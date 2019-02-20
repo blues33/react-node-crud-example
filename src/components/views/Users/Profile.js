@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Button, Card, CardHeader, CardBody, FormGroup, Row, Col, Label } from 'reactstrap';
 import { Field, reduxForm } from 'redux-form';
-import _ from 'lodash';
 
 import renderInput from '../../common/FormInput';
 import { updateProfile } from '../../../actions/user';
@@ -22,10 +21,6 @@ export class ProfileForm extends React.Component {
     this.props.handleSubmit();
     this.setState({ editMode: false });
   }
-
-  handleCancel = e => {
-    this.props.history.push('/users');
-  };
 
   render() {
     const { editMode } = this.state;

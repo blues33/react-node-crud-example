@@ -247,7 +247,7 @@ export const updateProfile = async (req, res, next) => {
   const inputSchema = Joi.object().keys({
     email: Joi.string().email(),
     fullname : Joi.string().max(255),
-  });
+  }).options({ stripUnknown: true });
 
   try {
     const data = await Joi.validate(req.body, inputSchema);
@@ -263,6 +263,40 @@ export const updateProfile = async (req, res, next) => {
         response(false, "Email is already used by other user")
       );
     }
+    next(err);
+  }
+
+}
+
+export const changePassword = async (req, res, next) => {
+
+  const inputSchema = Joi.object().keys({
+    oldPassword: Joi.string().max(255).required(),
+    newPassword: Joi.string().max(255).min(8).required()
+  });
+
+  try {
+    const data = await Joi.validate(req.body, inputSchema);
+
+    req.user.comparePassword(data.oldPassword, async (err, match) => {
+      if (err) next(err);
+
+      if (match) {
+        req.user.password = data.newPassword;
+
+        await req.user.save();
+
+        res.send(
+          response(true, 'Successfully changed password')
+        );
+      } else {
+        res.status(400).send(
+          response(false, 'Password is incorrect')
+        );
+      }
+    });
+
+  } catch (err) {
     next(err);
   }
 

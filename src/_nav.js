@@ -20,7 +20,12 @@ const getNavigationItems = (role) => {
   navItems.push({
     name: 'Profile',
     url: '/profile',
-    icon: 'user',
+    icon: 'cui-user',
+  });
+  navItems.push({
+    name: 'Password',
+    url: '/password',
+    icon: 'cui-cog',
   });
 
   return {

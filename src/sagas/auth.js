@@ -7,8 +7,9 @@ import {
   LOGIN_SUCCESS,
   REGISTER,
   REGISTER_SUCCESS,
+  CHANGE_PASSWORD,
 } from '../global/constants';
-import { anonymousRequest } from '../utils/api';
+import { anonymousRequest, authorizedRequest } from '../utils/api';
 
 function* login(action) {
   try {
@@ -32,9 +33,19 @@ function* register(action) {
   }
 }
 
+function* changePassword(action) {
+  try {
+    yield call(authorizedRequest, 'post', '/users/password', { body: action.payload });
+    yield call(toastr.success, '', 'Successfully changed password');
+  } catch (error) {
+    yield call(toastr.error, 'Error', error.response.data.data);
+  }
+}
+
 export default function* authSaga() {
   yield all([
     yield takeLatest(LOGIN, login),
     yield takeLatest(REGISTER, register),
+    yield takeLatest(CHANGE_PASSWORD, changePassword),
   ]);
 }

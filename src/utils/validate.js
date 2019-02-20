@@ -93,3 +93,26 @@ export const replyFormValidate = values => {
   }
   return errors;
 };
+
+export const passwordFormValidate = values => {
+  const errors = {};
+  if (!values.oldPassword) {
+    errors.oldPassword = 'Required';
+  }
+  if (!values.newPassword) {
+    errors.newPassword = 'Required';
+  } else if (values.newPassword.length < 8) {
+    errors.newPassword = 'Length should be at least 8';
+  }
+  if (!values.confirmPassword) {
+    errors.confirmPassword = 'Required';
+  }
+  if (
+    !!values.newPassword &&
+    !!values.confirmPassword &&
+    values.newPassword !== values.confirmPassword
+  ) {
+    errors.confirmPassword = 'Password does not match';
+  }
+  return errors;
+}

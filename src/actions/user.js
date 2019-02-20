@@ -9,6 +9,7 @@ import {
   DELETE_USER,
   UPDATE_USER,
   UPDATE_PROFILE,
+  CHANGE_PASSWORD,
 } from '../global/constants';
 
 export const startLoading = () => ({
@@ -55,4 +56,9 @@ export const updateUser = (user) => ({
 export const updateProfile = (user) => ({
   type: UPDATE_PROFILE,
   data: user,
+});
+
+export const changePassword = (values) => ({
+  type: CHANGE_PASSWORD,
+  payload: values,
 });
