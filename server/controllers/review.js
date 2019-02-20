@@ -18,7 +18,7 @@ export const getReview = async (req, res, next) => {
     if (review) {
       res.send( response(true, review) );
     } else {
-      res.status(404).send(
+      res.status(400).send(
         response(false, "Can't find the review")
       );
     }
@@ -88,7 +88,7 @@ export const createReview = async (req, res, next) => {
     });
 
     if (_review) {
-      res.status(500).send( response( false, 'Review already exists' ) )
+      res.status(400).send( response( false, 'Review already exists' ) )
     } else {
       const review = new Review(data);
       await review.save();
@@ -201,7 +201,7 @@ export const updateReview = async (req, res, next) => {
       await restaurant.save();
       res.send( response(true, review) );
     } else {
-      res.status(404).send(
+      res.status(400).send(
         response(false, "Can't find the review")
       );
     }
@@ -265,7 +265,7 @@ export const deleteReview = async(req, res, next) => {
 
       res.send( response(true, review) );
     } else {
-      res.status(404).send(
+      res.status(400).send(
         response(false, "Can't find the review")
       );
     }
@@ -300,7 +300,7 @@ export const replyToReview = async(req, res, next) => {
         );
       }
     } else {
-      res.status(404).send(
+      res.status(400).send(
         response(false, "Can't find the review")
       );
     }

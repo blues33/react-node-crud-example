@@ -49,17 +49,12 @@ const Login = ({ submitting, loading, handleSubmit, history }) => (
                       Login
                     </Button>
                   </Col>
+                  <Col xs="6" className="text-right">
+                    <Link to="/register">
+                      <Button color="link" className="px-0">Don't have an account?</Button>
+                    </Link>
+                  </Col>
                 </Row>
-              </CardBody>
-            </Card>
-            <Card className="text-white bg-primary py-5 d-md-down-none" style={{ width: '44%' }}>
-              <CardBody className="text-center">
-                <div>
-                  <h4>Still don't have an account?</h4>
-                  <Link to="/register">
-                    <Button color="primary" className="mt-3" active tabIndex={-1}>Register Now!</Button>
-                  </Link>
-                </div>
               </CardBody>
             </Card>
           </CardGroup>

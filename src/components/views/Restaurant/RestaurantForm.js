@@ -13,7 +13,9 @@ import { restaurantFormValidate } from '../../../utils/validate';
 export class RestaurantForm extends React.Component {
 
   componentDidMount() {
-    this.props.getUsers();
+    if (this.props.user.role === 'admin') {
+      this.props.getUsers();
+    }
   }
 
   handleCancel = e => {

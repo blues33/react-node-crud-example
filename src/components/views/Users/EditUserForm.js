@@ -10,13 +10,13 @@ import { userFormValidate } from '../../../utils/validate';
 
 export class EditUserForm extends React.Component {
   handleCancel = e => {
-    this.props.history.push('/restaurants');
+    this.props.history.push('/users');
   };
 
   render() {
     return (
       <div className="animated fadeIn h-100 w-100">
-        <h2>Edit restaurant</h2>
+        <h2>Edit user</h2>
         <Field
           name="email"
           type="email"

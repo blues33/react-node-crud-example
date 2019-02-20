@@ -20,7 +20,7 @@ export const login = async (req, res, next) => {
     const user = await User.findOne({ email: data.email });
 
     if (!user) {
-      res.status(401).send(
+      res.status(400).send(
         response(false, 'Invalid email or password')
       );
 
@@ -36,7 +36,7 @@ export const login = async (req, res, next) => {
           response(true, { token, user: user.toObject() })
         );
       } else {
-        res.status(401).send(
+        res.status(400).send(
           response(false, 'Invalid email or password')
         );
       }
@@ -67,7 +67,7 @@ export const register = async (req, res, next) => {
     );
   } catch (err) {
     if (err.name === 'MongoError' && err.code === 11000) {
-      res.status(err.status || 500).send(
+      res.status(400).send(
         response(false, "Email already exists")
       );
     }
@@ -96,7 +96,7 @@ export const createUser = async (req, res, next) => {
     );
   } catch (err) {
     if (err.name === 'MongoError' && err.code === 11000) {
-      res.status(err.status || 500).send(
+      res.status(400).send(
         response(false, "Email already exists")
       );
     }
@@ -148,7 +148,7 @@ export const getUser = async (req, res, next) => {
         res.send( response(true, user.toObject()) );
       }
     } else {
-      res.status(404).send(
+      res.status(400).send(
         response(false, "User does not exist")
       );
     }
@@ -188,14 +188,14 @@ export const updateUser = async (req, res, next) => {
       res.send( response(true, 'User updated successfully') );
 
     } else {
-      res.status(404).send(
+      res.status(400).send(
         response(false, 'Can\'t find the user' )
       );
     }
 
   } catch (err) {
     if (err.name === 'MongoError' && err.code === 11000) {
-      res.status(err.status || 500).send(
+      res.status(400).send(
         response(false, "Email is already used by other user")
       );
     }
@@ -233,7 +233,7 @@ export const deleteUser = async(req, res, next) => {
 
       res.send( response(true, user) );
     } else {
-      res.status(404).send(
+      res.status(400).send(
         response(false, "Can't find the user")
       );
     }

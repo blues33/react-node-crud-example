@@ -18,7 +18,7 @@ export const getRestaurant = async (req, res, next) => {
     if (restaurant) {
       res.send( response(true, restaurant) );
     } else {
-      res.status(404).send(
+      res.status(400).send(
         response(false, "Can't find the restaurant")
       );
     }
@@ -79,8 +79,8 @@ export const createRestaurant = async (req, res, next) => {
     );
   } catch (err) {
     if (err.name === 'MongoError' && err.code === 11000) {
-      res.status(err.status || 500).send(
-        response(false, "You can't use this name")
+      res.status(400).send(
+        response(false, "Name is already used")
       );
     }
     next(err);
@@ -116,7 +116,7 @@ export const updateRestaurant = async (req, res, next) => {
         );
       }
     } else {
-      res.status(404).send(
+      res.status(400).send(
         response(false, "Can't find the restaurant")
       );
 
@@ -126,8 +126,8 @@ export const updateRestaurant = async (req, res, next) => {
     res.send( response(true, restaurant) );
   } catch (err) {
     if (err.name === 'MongoError' && err.code === 11000) {
-      res.status(err.status || 500).send(
-        response(false, "You can't use this name")
+      res.status(400).send(
+        response(false, "Name is already used")
       );
     }
     next(err);
@@ -152,7 +152,7 @@ export const deleteRestaurant = async(req, res, next) => {
         );
       }
     } else {
-      res.status(404).send(
+      res.status(400).send(
         response(false, "Can't find the restaurant")
       );
     }

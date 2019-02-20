@@ -201,7 +201,7 @@ export class Restaurant extends React.Component {
                     <Label><strong>Lowest rated review</strong></Label>
                   </Col>
                   <Col xs="12" md={this.props.user.role === 'regular' ? 6 : 9}>
-                  { this.props.restaurant.highestReview ?
+                  { this.props.restaurant.lowestReview ?
                     <div>
                       <StarRatings
                         rating={this.props.restaurant.lowestReview.rate}
@@ -235,7 +235,7 @@ export class Restaurant extends React.Component {
                               starSpacing="0px"
                             />
                           </div>
-                          <div>{moment(review.created).format('MM-DD-YYYY')}</div>
+                          <div>{moment(review.created).format('MM-DD-YYYY hh:mm a')}</div>
                         </div>
                         <p className="form-control-static">
                           <i>Visited on </i>{ moment(review.visited).format('MM-DD-YYYY') }
@@ -381,7 +381,7 @@ export class Restaurant extends React.Component {
               <Label><strong>Comment</strong></Label>
               <Input type="textarea" className="form-control" value={this.state.comment} onChange={this.onCommentChange} />
             </FormGroup>
-            {this.state.replyText &&
+            {this.state.selectedReview && this.state.selectedReview.status !== 'pending' &&
             <FormGroup>
               <Label><strong>Reply comment</strong></Label>
               <Input type="textarea" className="form-control" value={this.state.replyText} onChange={this.onReplyChange} />
