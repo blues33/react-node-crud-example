@@ -377,10 +377,7 @@ export default connect(
     getRestaurant: (id) => dispatch(getRestaurantInfo(id)),
     getReviews: (id) => dispatch(getReviewsList(id)),
     addReview: (values) => dispatch(addReview(values)),
-    updateReview: (values) => {
-      console.log('update: ', values);
-      dispatch(updateReview(values))
-    },
+    updateReview: (values) => dispatch(updateReview(values)),
     deleteReview: (id) => dispatch(deleteReview(id)),
   }),
 )(ReduxForm);

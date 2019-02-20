@@ -80,7 +80,6 @@ const RegisterForm = reduxForm({
   form: "registerForm",
   onSubmit: (values, dispatch, props) => {
     const { role, email, password, fullname } = values;
-    console.log('form: ', values)
     props.registerUser({
       role,
       email,
