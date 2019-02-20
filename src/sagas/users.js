@@ -28,6 +28,7 @@ function* addUser(action) {
   try {
     const response = yield call(authorizedRequest, 'post', '/users', { body: action.user });
     yield put({ type: USER_ADDED, user: response.data.data });
+    yield call(toastr.success, '', 'Successfully created user');
     yield put(push('/users'));
   } catch (error) {
     console.log('add user error: ', error);
@@ -39,6 +40,7 @@ function* updateUser(action) {
   try {
     const response = yield call(authorizedRequest, 'put', `/users/${action.user.id}`, { body: action.user });
     yield put({ type: USER_UPDATED, user: response.data.data });
+    yield call(toastr.success, '', 'Successfully updated user');
     yield put(push('/users'));
   } catch (error) {
     console.log('update user error: ', error);
@@ -50,6 +52,7 @@ function* deleteUser(action) {
   try {
     const response = yield call(authorizedRequest, 'delete', `/users/${action.id}`);
     yield put({ type: USER_DELETED, user: response.data.data });
+    yield call(toastr.success, '', 'Successfully removed user');
   } catch (error) {
     console.log('delete user error: ', error);
     yield call(toastr.error, 'Error', error.response.data.data);

@@ -60,6 +60,7 @@ class Users extends React.Component {
         <Button color="primary" onClick={this.onAdd} className="m-b-20">
           Add
         </Button>
+        {users.length > 0 ?
         <Table bordered>
           <thead>
             <tr>
@@ -96,6 +97,8 @@ class Users extends React.Component {
             ))}
           </tbody>
         </Table>
+        : <div className="align-center"><h4>No users found</h4></div>
+        }
 
         <ConfirmModal
           isOpen={this.state.isModalOpen}

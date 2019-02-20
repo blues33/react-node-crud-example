@@ -3,8 +3,7 @@ import User from '../../models/user';
 const createAdminUser = async () => {
   const user = new User({
     email: process.env.ADMIN_EMAIL || 'adminuser@gmail.com',
-    firstname: 'Admin',
-    lastname: 'User',
+    fullname: 'Admin User',
     password: process.env.ADMIN_PASSWORD || 'password',
     role: 'admin'
   });

@@ -6,6 +6,8 @@ import {
   getToken,
   response,
 } from '../utils/common';
+import Restaurant from '../models/restaurant';
+import Review from '../models/review';
 
 export const login = async (req, res, next) => {
   const loginFields = Joi.object().keys({
@@ -215,6 +217,16 @@ export const deleteUser = async(req, res, next) => {
         );
 
         return;
+      }
+
+      if (user.role === 'owner') {
+        const restaurants = await Restaurant.find({owner: id});
+        if (restaurants && restaurants.length > 0) {
+          for (let i = 0; i <restaurants.length; i ++) {
+            await Review.remove({ restaurant: restaurants[i]._id });
+            await restaurants[i].remove();
+          }
+        }
       }
 
       user.remove();
