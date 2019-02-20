@@ -68,6 +68,8 @@ export class Restaurant extends React.Component {
     this.props.submitReply({
       reviewId: this.state.selectedReview._id,
       replyComment: this.state.replyComment,
+    });
+    this.setState({
       isReplyModalOpen: false,
     });
   }
