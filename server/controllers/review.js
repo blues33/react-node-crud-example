@@ -48,6 +48,12 @@ export const getReviews = async (req, res, next) => {
 
 export const getPendingReviews = async (req, res, next) => {
   
+  if (req.user.role !== 'owner') {
+    res.status(403).send(
+      response(false, "Permission denied")
+    );
+  }
+
   try {
     let options = {
       status: 'pending',
@@ -58,8 +64,8 @@ export const getPendingReviews = async (req, res, next) => {
       select: '-password'
     }).populate('restaurant')
     .sort({created: -1});
-
-    reviews = reviews.filter(review => review.restaurant.owner.equals(req.user._id));
+    
+    reviews = reviews.filter(review => review.restaurant && review.restaurant.owner && review.restaurant.owner.equals(req.user._id));
 
     res.send( response(true, reviews) );
   } catch(err) {
