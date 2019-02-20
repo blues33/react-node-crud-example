@@ -1,6 +1,5 @@
 import { call, all, takeLatest, put } from 'redux-saga/effects';
 import { toastr } from 'react-redux-toastr';
-import { push } from 'connected-react-router';
 
 import {
   GET_ALL_REVIEWS,
@@ -8,11 +7,8 @@ import {
   GET_REVIEW,
   SET_CURRENT_REVIEW,
   ADD_REVIEW,
-  REVIEW_ADDED,
   UPDATE_REVIEW,
-  REVIEW_UPDATED,
   DELETE_REVIEW,
-  REVIEW_DELETED,
   GET_RESTAURANT,
   FETCH_PENDING_REVIEWS,
   SET_PENDING_REVIEWS,
@@ -42,8 +38,9 @@ function* getReview(action) {
 function* addReview(action) {
   try {
     const response = yield call(authorizedRequest, 'post', '/reviews', { body: action.review });
-    yield put({ type: REVIEW_ADDED, review: response.data.data });
+    yield put({ type: GET_ALL_REVIEWS, restaurantId: response.data.data.restaurant });
     yield put({ type: GET_RESTAURANT, id: response.data.data.restaurant });
+    yield call(toastr.success, '', 'Successfully added your review');
   } catch (error) {
     console.log('add review error: ', error);
     yield call(toastr.error, 'Error', 'Could not add a new review');
@@ -53,8 +50,9 @@ function* addReview(action) {
 function* updateReview(action) {
   try {
     const response = yield call(authorizedRequest, 'put', `/reviews/${action.review._id}`, { body: action.review });
-    yield put({ type: REVIEW_UPDATED, review: response.data.data });
+    yield put({ type: GET_ALL_REVIEWS, restaurantId: response.data.data.restaurant });
     yield put({ type: GET_RESTAURANT, id: response.data.data.restaurant });
+    yield call(toastr.success, '', 'Successfully updated review');
   } catch (error) {
     console.log('edit review error: ', error);
     yield call(toastr.error, 'Error', 'Could not edit the review');
@@ -64,8 +62,9 @@ function* updateReview(action) {
 function* deleteReview(action) {
   try {
   const response = yield call(authorizedRequest, 'delete', `/reviews/${action.id}`);
-    yield put({ type: REVIEW_DELETED, review: response.data.data });
+  yield put({ type: GET_ALL_REVIEWS, restaurantId: response.data.data.restaurant });
     yield put({ type: GET_RESTAURANT, id: response.data.data.restaurant });
+    yield call(toastr.success, '', 'Successfully removed review');
   } catch (error) {
     console.log('delete review error: ', error);
     yield call(toastr.error, 'Error', 'Could not delete the review');
@@ -84,7 +83,8 @@ function* fetchPendingReviews(action) {
 function* submitReply(action) {
   try {
     const response = yield call(authorizedRequest, 'post', `/reviews/${action.reviewId}/reply`, {body: {replyComment: action.replyComment} });
-    yield put({ type: REVIEW_REPLIED, review: response.data.data });
+    yield put({ type: GET_ALL_REVIEWS, restaurantId: response.data.data.restaurant });
+    yield call(toastr.success, '', 'Successfully submitted your reply');
   } catch (error) {
     console.log('reply error: ', error);
   }

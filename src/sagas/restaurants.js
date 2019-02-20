@@ -8,11 +8,8 @@ import {
   GET_RESTAURANT,
   SET_CURRENT_RESTAURANT,
   ADD_RESTAURANT,
-  RESTAURANT_ADDED,
   UPDATE_RESTAURANT,
-  RESTAURANT_UPDATED,
   DELETE_RESTAURANT,
-  RESTAURANT_DELETED,
 } from '../global/constants';
 import { authorizedRequest } from '../utils/api';
 
@@ -36,7 +33,8 @@ function* getRestaurant(action) {
 
 function* addRestaurant(action) {
   try {
-    const response = yield call(authorizedRequest, 'post', '/restaurants', { body: action.restaurant });
+    yield call(authorizedRequest, 'post', '/restaurants', { body: action.restaurant });
+    yield call(toastr.success, '', 'Successfully created new restaurant');
     yield put(push('/restaurants'));
   } catch (error) {
     console.log('add restaurant error: ', error);
@@ -46,7 +44,8 @@ function* addRestaurant(action) {
 
 function* updateRestaurant(action) {
   try {
-    const response = yield call(authorizedRequest, 'put', `/restaurants/${action.restaurant.id}`, { body: action.restaurant });
+    yield call(authorizedRequest, 'put', `/restaurants/${action.restaurant.id}`, { body: action.restaurant });
+    yield call(toastr.success, '', 'Successfully updated restaurant');
     yield put(push('/restaurants'));
   } catch (error) {
     console.log('edit restaurant error: ', error);
@@ -56,7 +55,8 @@ function* updateRestaurant(action) {
 
 function* deleteRestaurant(action) {
   try {
-    const response = yield call(authorizedRequest, 'delete', `/restaurants/${action.id}`);
+    yield call(authorizedRequest, 'delete', `/restaurants/${action.id}`);
+    yield call(toastr.success, '', 'Successfully removed restaurant');
     yield call(action.callback, true);
   } catch (error) {
     console.log('delete restaurant error: ', error);
