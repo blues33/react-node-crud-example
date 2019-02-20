@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export const loginFormValidate = values => {
   const errors = {};
   if (!values.email) {
@@ -75,6 +77,8 @@ export const reviewFormValidate = values => {
   }
   if (!values.visited) {
     errors.visited = 'Required';
+  } else if (moment(values.visited).isAfter(moment())) {
+    errors.visited = 'Visit date cannot past today\'s date';
   }
   if (!values.comment) {
     errors.comment = 'Required';
