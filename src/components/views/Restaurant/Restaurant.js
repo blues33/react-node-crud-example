@@ -7,12 +7,12 @@ import moment from 'moment';
 import StarRatings from 'react-star-ratings';
 
 import renderInput from '../../common/FormInput';
+import renderDatePicker from '../../common/FormDatepicker';
 import renderStarRating from '../../common/FormRating';
 import ConfirmModal from '../../common/ConfirmModal';
 import { getRestaurantInfo } from '../../../actions/restaurants';
 import { addReview, getReviewsList, updateReview, deleteReview } from '../../../actions/reviews';
 import { reviewFormValidate } from '../../../utils/validate';
-import renderDatePicker from '../../common/FormDatepicker';
 
 export class Restaurant extends React.Component {
 
@@ -198,6 +198,9 @@ export class Restaurant extends React.Component {
                           </div>
                           <div>{moment(review.created).format('MM-DD-YYYY')}</div>
                         </div>
+                        <p className="form-control-static">
+                          <i>Visited on </i>{ moment(review.visited).format('MM-DD-YYYY') }
+                        </p>
                         <p className="form-control-static">
                           { review.comment }
                         </p>
