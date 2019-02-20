@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Row, Col, Label, FormGroup, Card, CardBody, CardHeader, CardFooter, Modal, ModalHeader, ModalBody, ModalFooter, Input } from 'reactstrap';
+import { Button, Row, Col, Label, FormGroup, Card, CardBody, CardHeader, CardFooter, 
+  Modal, ModalHeader, ModalBody, ModalFooter, Input, FormFeedback } from 'reactstrap';
 import { Field, reduxForm } from 'redux-form';
 import _ from 'lodash';
 import moment from 'moment';
@@ -11,7 +12,7 @@ import renderDatePicker from '../../common/FormDatepicker';
 import renderStarRating from '../../common/FormRating';
 import ConfirmModal from '../../common/ConfirmModal';
 import { getRestaurantInfo } from '../../../actions/restaurants';
-import { addReview, getReviewsList, updateReview, deleteReview } from '../../../actions/reviews';
+import { addReview, getReviewsList, updateReview, deleteReview, submitReply } from '../../../actions/reviews';
 import { reviewFormValidate } from '../../../utils/validate';
 
 export class Restaurant extends React.Component {
@@ -25,12 +26,50 @@ export class Restaurant extends React.Component {
       rate: 0,
       comment: '',
       replyText: '',
+      isReplyModalOpen: false,
+      replyComment: '',
+      replyError: '',
     };
   }
 
   componentDidMount() {
     this.props.getRestaurant(this.props.match.params.id);
     this.props.getReviews(this.props.match.params.id);
+  }
+
+  toggleReplyModal = () => {
+    this.setState({
+      isReplyModalOpen: !this.state.isReplyModalOpen,
+    });
+  }
+
+  onReply = (review) => {
+    this.setState({
+      selectedReview: review,
+      isReplyModalOpen: true,
+      replyComment: '',
+    });
+  }
+
+  onReplyCommentChange = (e) => {
+    const value = e.target.value;
+    const state = {replyComment: value};
+    if (!value) {
+      state.replyError = 'Required';
+    }
+    this.setState(state);
+  }
+
+  submitReply = () => {
+    if (!this.state.replyComment) {
+      this.setState({replyError: 'Required'});
+      return;
+    }
+    this.props.submitReply({
+      reviewId: this.state.selectedReview._id,
+      replyComment: this.state.replyComment,
+      isReplyModalOpen: false,
+    });
   }
 
   toggleEditModal = () => {
@@ -209,6 +248,11 @@ export class Restaurant extends React.Component {
                           {review.status === 'pending' ? 'Pending' : review.replyComment}
                         </i>
                       </CardBody>
+                      {this.props.user.role === 'owner' && review.status === 'pending' &&
+                      <CardFooter className="align-end">
+                        <Button color="primary" onClick={() => this.onReply(review)}>Reply</Button>
+                      </CardFooter>
+                      }
                       {this.props.user.role === 'admin' &&
                       <CardFooter className="align-end">
                         <Button color="warning" onClick={() => this.onEdit(review)}>Edit</Button>
@@ -305,6 +349,18 @@ export class Restaurant extends React.Component {
         </Row>
         : <div className="align-center"><h4>Restaurant does not exist</h4></div>
       }
+        <Modal isOpen={this.state.isReplyModalOpen}>
+          <ModalHeader toggle={this.toggleReplyModal}>Reply</ModalHeader>
+          <ModalBody>
+            <Label><strong>Reply comment</strong></Label>
+            <Input type="textarea" className="form-control" value={this.state.replyComment} onChange={this.onReplyCommentChange} />
+            {this.state.replyError && <FormFeedback>{this.state.replyError}</FormFeedback>}
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={this.submitReply}>Reply</Button>{' '}
+            <Button color="secondary" onClick={this.toggleReplyModal}>Cancel</Button>
+          </ModalFooter>
+        </Modal>
         <Modal isOpen={this.state.isEditModalOpen}>
           <ModalHeader toggle={this.toggleEditModal}>Edit Review</ModalHeader>
           <ModalBody>
@@ -379,5 +435,6 @@ export default connect(
     addReview: (values) => dispatch(addReview(values)),
     updateReview: (values) => dispatch(updateReview(values)),
     deleteReview: (id) => dispatch(deleteReview(id)),
+    submitReply: (reply) => dispatch(submitReply(reply)),
   }),
 )(ReduxForm);

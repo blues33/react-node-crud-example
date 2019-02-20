@@ -18,6 +18,7 @@ const renderDatePicker = ({
           selected={Date.parse(input.value)}
           onChange={value => input.onChange(value)}
           maxDate={maxDate}
+          className="form-control"
         />
       </div>
       {touched && error && <FormFeedback>{error}</FormFeedback>}
