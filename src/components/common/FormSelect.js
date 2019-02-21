@@ -2,7 +2,6 @@ import React from 'react';
 import {
   FormGroup, Label, FormFeedback, Input,
 } from 'reactstrap';
-import classnames from 'classnames';
 
 export const renderSelect = ({
   options,

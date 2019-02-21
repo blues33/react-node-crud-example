@@ -11,10 +11,19 @@ export const getRestaurant = async (req, res, next) => {
   const id = req.params.id;
 
   try {
-    const restaurant = await Restaurant.findById(id).populate({
+    const restaurant = await Restaurant.findById(id)
+    .populate({
       path: 'owner',
       select: '-password'
-    }).populate('highestReview lowestReview');
+    })
+    .populate({
+      path: 'highestReview',
+      populate: { path: 'user' }
+    })
+    .populate({
+      path: 'lowestReview',
+      populate: { path: 'user' }
+    });
 
     if (restaurant) {
       res.send( response(true, restaurant) );
@@ -44,8 +53,7 @@ export const getRestaurants = async (req, res, next) => {
     const restaurants = await Restaurant.find(options).populate({
       path: 'owner',
       select: '-password'
-    }).populate('highestReview lowestReview')
-    .sort({rateAvg: -1});
+    });
 
     res.send( response(true, restaurants) );
   } catch(err) {

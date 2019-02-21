@@ -126,7 +126,7 @@ class Restaurants extends React.Component {
       text: 'Actions',
       formatter: (cell, row, rowIndex) => (
         <>
-        <Button color="primary" className="m-l-5 m-r-5 m-b-10" onClick={() => this.viewRestaurant(row)}>
+        <Button color="info" className="m-l-5 m-r-5 m-b-10" onClick={() => this.viewRestaurant(row)}>
           View
         </Button>
         {user.role !== 'regular'
