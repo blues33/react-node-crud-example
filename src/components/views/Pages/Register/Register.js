@@ -22,8 +22,8 @@ const Register = ({ submitting, loading, handleSubmit }) => (
     <Container>
       <Row className="justify-content-center">
         <Col md="6">
-          <Card className="mx-4">
-            <CardBody className="p-4">
+          <Card className="p-4">
+            <CardBody>
               <h1>Register</h1>
               <p className="text-muted">Create your account</p>
               <Field
@@ -58,7 +58,7 @@ const Register = ({ submitting, loading, handleSubmit }) => (
               />
               <div className="d-flex justify-content-between align-items-center">
                 <Button
-                  color="success"
+                  color="primary"
                   disabled={submitting || loading}
                   onClick={handleSubmit}
                 >
