@@ -1,8 +1,8 @@
 const getNavigationItems = (role) => {
-  let navItems = [{
+  const navItems = [{
     name: 'Restaurants',
     url: '/restaurants',
-    icon: 'icon-grid'
+    icon: 'icon-grid',
   }];
   if (role === 'admin') {
     navItems.push({

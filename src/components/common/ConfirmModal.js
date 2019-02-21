@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import {
+  Button, Modal, ModalBody, ModalFooter, ModalHeader,
+} from 'reactstrap';
 
 class ConfirmModal extends Component {
   onConfirm = () => {
@@ -15,9 +17,11 @@ class ConfirmModal extends Component {
   }
 
   render() {
-    const { type, className, confirmText, title, text, isOpen } = this.props;
+    const {
+      type, className, confirmText, title, text, isOpen,
+    } = this.props;
     return (
-      <Modal isOpen={isOpen} className={'modal-' + type + ' ' + className}>
+      <Modal isOpen={isOpen} className={`modal-${type} ${className}`}>
         <ModalHeader toggle={this.props.toggleModal}>{ title }</ModalHeader>
         <ModalBody>
           { text }
@@ -27,7 +31,7 @@ class ConfirmModal extends Component {
           <Button color="secondary" onClick={this.onCancel}>Cancel</Button>
         </ModalFooter>
       </Modal>
-    )
+    );
   }
 }
 

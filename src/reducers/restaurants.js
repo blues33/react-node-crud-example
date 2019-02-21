@@ -23,7 +23,7 @@ export default function restaurantsReducer(state = initialState, action) {
       };
     case LOGOUT:
       return {
-        ...initialState
+        ...initialState,
       };
     default:
       return state;

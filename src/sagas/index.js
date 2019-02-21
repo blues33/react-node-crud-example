@@ -1,4 +1,4 @@
-import { all } from "redux-saga/effects";
+import { all } from 'redux-saga/effects';
 
 import authSaga from './auth';
 import restaurantSaga from './restaurants';

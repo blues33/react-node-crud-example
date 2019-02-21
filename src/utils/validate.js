@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export const loginFormValidate = values => {
+export const loginFormValidate = (values) => {
   const errors = {};
   if (!values.email) {
     errors.email = 'Required';
@@ -13,7 +13,7 @@ export const loginFormValidate = values => {
   return errors;
 };
 
-export const userFormValidate = values => {
+export const userFormValidate = (values) => {
   const errors = {};
   if (!values.email) {
     errors.email = 'Required';
@@ -26,7 +26,7 @@ export const userFormValidate = values => {
   return errors;
 };
 
-export const registerFormValidate = values => {
+export const registerFormValidate = (values) => {
   const errors = {};
   if (!values.role) {
     errors.role = 'Required';
@@ -48,16 +48,16 @@ export const registerFormValidate = values => {
     errors.confirmPassword = 'Required';
   }
   if (
-    !!values.password &&
-    !!values.confirmPassword &&
-    values.password !== values.confirmPassword
+    !!values.password
+    && !!values.confirmPassword
+    && values.password !== values.confirmPassword
   ) {
     errors.confirmPassword = 'Password does not match';
   }
   return errors;
 };
 
-export const restaurantFormValidate = values => {
+export const restaurantFormValidate = (values) => {
   const errors = {};
   if (values.owner === '---') {
     errors.owner = 'Required';
@@ -65,11 +65,11 @@ export const restaurantFormValidate = values => {
   if (!values.name || !values.name.trim()) {
     errors.name = 'Required';
   }
-  
+
   return errors;
 };
 
-export const reviewFormValidate = values => {
+export const reviewFormValidate = (values) => {
   const errors = {};
   if (!values.rate) {
     errors.rate = 'Required';
@@ -85,7 +85,7 @@ export const reviewFormValidate = values => {
   return errors;
 };
 
-export const replyFormValidate = values => {
+export const replyFormValidate = (values) => {
   const errors = {};
   if (!values.comment || !values.comment.trim()) {
     errors.comment = 'Required';
@@ -93,7 +93,7 @@ export const replyFormValidate = values => {
   return errors;
 };
 
-export const passwordFormValidate = values => {
+export const passwordFormValidate = (values) => {
   const errors = {};
   if (!values.oldPassword) {
     errors.oldPassword = 'Required';
@@ -107,11 +107,11 @@ export const passwordFormValidate = values => {
     errors.confirmPassword = 'Required';
   }
   if (
-    !!values.newPassword &&
-    !!values.confirmPassword &&
-    values.newPassword !== values.confirmPassword
+    !!values.newPassword
+    && !!values.confirmPassword
+    && values.newPassword !== values.confirmPassword
   ) {
     errors.confirmPassword = 'Password does not match';
   }
   return errors;
-}
+};

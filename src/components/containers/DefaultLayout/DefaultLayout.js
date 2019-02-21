@@ -1,24 +1,24 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Redirect, Route, Switch } from "react-router-dom";
-import { Container } from "reactstrap";
-
-import RoleRoute from '../../../route-helpers/RoleRoute';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Redirect, Switch } from 'react-router-dom';
+import { Container } from 'reactstrap';
 
 import {
   AppFooter,
   AppHeader,
   AppSidebar,
   AppSidebarMinimizer,
-  AppSidebarNav
-} from "@coreui/react";
+  AppSidebarNav,
+} from '@coreui/react';
+import RoleRoute from '../../../route-helpers/RoleRoute';
+
 // sidebar nav config
-import getNavigationItems from "../../../_nav";
+import getNavigationItems from '../../../_nav';
 // routes config
-import routes from "../../../routes";
-import DefaultFooter from "./DefaultFooter";
-import DefaultHeader from "./DefaultHeader";
-import { logout } from "../../../actions/user";
+import routes from '../../../routes';
+import DefaultFooter from './DefaultFooter';
+import DefaultHeader from './DefaultHeader';
+import { logout } from '../../../actions/user';
 
 class DefaultLayout extends Component {
   render() {

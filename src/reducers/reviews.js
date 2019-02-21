@@ -30,7 +30,7 @@ export default function reviewsReducer(state = initialState, action) {
       };
     case LOGOUT:
       return {
-        ...initialState
+        ...initialState,
       };
     default:
       return state;

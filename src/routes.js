@@ -58,15 +58,29 @@ const Password = Loadable({
 });
 
 const routes = [
-  { path: '/', exact: true, name: '', component: DefaultLayout },
+  {
+    path: '/', exact: true, name: '', component: DefaultLayout,
+  },
   { path: '/restaurants', name: 'Restaurants', component: Restaurants },
   { path: '/restaurant/detail/:id', name: 'Restaurant', component: Restaurant },
-  { path: '/restaurant/add', name: 'Add Restaurant', component: RestaurantForm, roles: ['admin', 'owner'] },
-  { path: '/restaurant/edit/:id', name: 'Edit Restaurant', component: EditRestaurantForm, roles: ['admin', 'owner'] },
-  { path: '/users', name: 'Users', component: Users, roles: ['admin'] },
-  { path: '/user/new', name: 'Add User', component: UserForm, roles: ['admin'] },
-  { path: '/user/edit/:id', name: 'Edit User', component: EditUserForm, roles: ['admin'] },
-  { path: '/reviews-pending', name: 'Pending Reviews', component: PendingReviews, roles: ['owner'] },
+  {
+    path: '/restaurant/add', name: 'Add Restaurant', component: RestaurantForm, roles: ['admin', 'owner'],
+  },
+  {
+    path: '/restaurant/edit/:id', name: 'Edit Restaurant', component: EditRestaurantForm, roles: ['admin', 'owner'],
+  },
+  {
+    path: '/users', name: 'Users', component: Users, roles: ['admin'],
+  },
+  {
+    path: '/user/new', name: 'Add User', component: UserForm, roles: ['admin'],
+  },
+  {
+    path: '/user/edit/:id', name: 'Edit User', component: EditUserForm, roles: ['admin'],
+  },
+  {
+    path: '/reviews-pending', name: 'Pending Reviews', component: PendingReviews, roles: ['owner'],
+  },
   { path: '/profile', name: 'Edit User', component: Profile },
   { path: '/password', name: 'Change Password', component: Password },
 ];

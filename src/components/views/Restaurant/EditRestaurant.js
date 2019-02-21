@@ -24,7 +24,7 @@ export class EditRestaurantForm extends React.Component {
     }
   }
 
-  handleCancel = e => {
+  handleCancel = (e) => {
     this.props.history.push('/restaurants');
   };
 
@@ -33,10 +33,10 @@ export class EditRestaurantForm extends React.Component {
       return null;
     }
     const options = this.props.users
-      .filter((user) => user.role === 'owner')
-      .map((user) => ({
+      .filter(user => user.role === 'owner')
+      .map(user => ({
         label: user.fullname,
-        value: user._id
+        value: user._id,
       }));
     return (
       <div className="animated fadeIn h-100 w-100">
@@ -45,8 +45,8 @@ export class EditRestaurantForm extends React.Component {
           <BreadcrumbItem active>{this.props.initialValues.name}</BreadcrumbItem>
         </Breadcrumb>
         <h2>Edit restaurant</h2>
-        { this.props.user.role === 'admin' && 
-        <Field
+        { this.props.user.role === 'admin'
+        && <Field
           name="owner"
           label="Owner"
           options={options}
@@ -92,18 +92,18 @@ export default connect(
       initialValues = {
         name: restaurants.currentRestaurant.name,
         owner: restaurants.currentRestaurant.owner._id,
-      }
+      };
     }
     return {
       ...authentication,
       ...restaurants,
       ...users,
       initialValues,
-    }
+    };
   },
   dispatch => ({
     getUsers: () => dispatch(getUsers()),
-    getRestaurant: (id) => dispatch(getRestaurantInfo(id)),
-    updateRestaurant: (values) => dispatch(updateRestaurant(values)),
+    getRestaurant: id => dispatch(getRestaurantInfo(id)),
+    updateRestaurant: values => dispatch(updateRestaurant(values)),
   }),
 )(ReduxForm);

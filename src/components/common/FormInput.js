@@ -1,5 +1,7 @@
 import React from 'react';
-import { FormGroup, Label, FormFeedback, Input } from 'reactstrap';
+import {
+  FormGroup, Label, FormFeedback, Input,
+} from 'reactstrap';
 import classnames from 'classnames';
 
 const renderInput = ({

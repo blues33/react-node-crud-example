@@ -37,7 +37,7 @@ class Restaurants extends React.Component {
     this.props.history.push('/restaurant/add');
   };
 
-  onFilterValueChange = values => {
+  onFilterValueChange = (values) => {
     this.setState({
       minRate: values[0],
       maxRate: values[1],
@@ -60,7 +60,7 @@ class Restaurants extends React.Component {
     this.setState({
       isModalOpen: true,
       delRestaurant: restaurant,
-    })
+    });
   }
 
   toggleConfirmModal = () => {
@@ -71,8 +71,8 @@ class Restaurants extends React.Component {
 
   onConfirmDelete = () => {
     this.setState({
-      isModalOpen: false
-    })
+      isModalOpen: false,
+    });
     this.props.deleteRestaurant(this.state.delRestaurant._id, (success) => {
       if (success) {
         this.props.getRestaurantsList({
@@ -85,8 +85,8 @@ class Restaurants extends React.Component {
 
   onCancelDelete = () => {
     this.setState({
-      isModalOpen: false
-    })
+      isModalOpen: false,
+    });
   }
 
   render() {
@@ -97,7 +97,7 @@ class Restaurants extends React.Component {
       text: '#',
       formatter: (cell, row, rowIndex) => (page - 1) * pageSize + rowIndex + 1,
       classes: 'column-number',
-      headerClasses: 'column-number'
+      headerClasses: 'column-number',
     },
     {
       dataField: 'name',
@@ -111,14 +111,14 @@ class Restaurants extends React.Component {
       dataField: 'rateAvg',
       text: 'Average rating',
       sort: true,
-      formatter: (cell, row, rowIndex) => cell > 0 ? (
+      formatter: (cell, row, rowIndex) => (cell > 0 ? (
         <StarRatings
           rating={cell}
           starRatedColor="rgb(230, 67, 47)"
           starDimension="20px"
           starSpacing="0px"
         />
-        ) : <i>No review</i>,
+      ) : <i>No review</i>),
       classes: 'td-rating',
       headerClasses: 'td-rating',
     }, {
@@ -129,8 +129,8 @@ class Restaurants extends React.Component {
         <Button color="primary" className="m-l-5 m-r-5 m-b-10" onClick={() => this.viewRestaurant(row)}>
           View
         </Button>
-        {user.role !== 'regular' && 
-        <>
+        {user.role !== 'regular'
+        && <>
         <Button color="warning" className="m-l-5 m-r-5 m-b-10" onClick={() => this.onEdit(row)}>
           Edit
         </Button>
@@ -142,11 +142,11 @@ class Restaurants extends React.Component {
         </>
       ),
       align: 'center',
-      headerAlign: 'center'
+      headerAlign: 'center',
     }];
     const defaultSorted = [{
       dataField: 'rateAvg',
-      order: 'desc'
+      order: 'desc',
     }];
     const options = {
       onSizePerPageChange: (sizePerPage, page) => {
@@ -160,13 +160,13 @@ class Restaurants extends React.Component {
           pageSize: sizePerPage,
           page,
         });
-      }
+      },
     };
     return (
       <div className="animated fadeIn h-100 w-100">
         <div className="space-between m-b-20 align-middle">
-        { ['admin', 'owner'].indexOf(user.role) >= 0 ? 
-          <Button color="primary" onClick={this.onAdd}>
+        { ['admin', 'owner'].indexOf(user.role) >= 0
+          ? <Button color="primary" onClick={this.onAdd}>
             Add
           </Button>
           : <div />
@@ -215,13 +215,13 @@ class Restaurants extends React.Component {
 }
 
 export default connect(
-  ({ restaurants, authentication, }) => ({
+  ({ restaurants, authentication }) => ({
     ...restaurants,
     ...authentication,
   }),
   dispatch => ({
     getUsers: () => dispatch(getUsers()),
-    getRestaurantsList: (values) => dispatch(getRestaurantsList(values)),
+    getRestaurantsList: values => dispatch(getRestaurantsList(values)),
     deleteRestaurant: (id, callback) => dispatch(deleteRestaurant(id, callback)),
   }),
 )(Restaurants);

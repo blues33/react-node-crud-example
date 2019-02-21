@@ -1,4 +1,6 @@
-import { call, all, takeLatest, put } from 'redux-saga/effects';
+import {
+  call, all, takeLatest, put,
+} from 'redux-saga/effects';
 import { toastr } from 'react-redux-toastr';
 
 import {
@@ -13,7 +15,6 @@ import {
   FETCH_PENDING_REVIEWS,
   SET_PENDING_REVIEWS,
   SUBMIT_REPLY,
-  REVIEW_REPLIED,
 } from '../global/constants';
 import { authorizedRequest } from '../utils/api';
 
@@ -61,8 +62,8 @@ function* updateReview(action) {
 
 function* deleteReview(action) {
   try {
-  const response = yield call(authorizedRequest, 'delete', `/reviews/${action.id}`);
-  yield put({ type: GET_ALL_REVIEWS, restaurantId: response.data.data.restaurant });
+    const response = yield call(authorizedRequest, 'delete', `/reviews/${action.id}`);
+    yield put({ type: GET_ALL_REVIEWS, restaurantId: response.data.data.restaurant });
     yield put({ type: GET_RESTAURANT, id: response.data.data.restaurant });
     yield call(toastr.success, '', 'Successfully removed review');
   } catch (error) {
@@ -83,7 +84,7 @@ function* fetchPendingReviews(action) {
 
 function* submitReply(action) {
   try {
-    const response = yield call(authorizedRequest, 'post', `/reviews/${action.reviewId}/reply`, {body: {replyComment: action.replyComment} });
+    const response = yield call(authorizedRequest, 'post', `/reviews/${action.reviewId}/reply`, { body: { replyComment: action.replyComment } });
     yield put({ type: FETCH_PENDING_REVIEWS });
     yield put({ type: GET_ALL_REVIEWS, restaurantId: response.data.data.restaurant._id });
     yield call(toastr.success, '', 'Successfully submitted your reply');

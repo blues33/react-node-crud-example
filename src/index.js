@@ -1,12 +1,12 @@
-import "./polyfill";
-import React from "react";
-import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
-import { ConnectedRouter } from "connected-react-router";
-import { PersistGate } from "redux-persist/integration/react";
+import './polyfill';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { ConnectedRouter } from 'connected-react-router';
+import { PersistGate } from 'redux-persist/integration/react';
 
-import App from "./wrapper/App";
-import store, { persistor, history } from "./store";
+import App from './wrapper/App';
+import store, { persistor, history } from './store';
 // disable ServiceWorker
 // import registerServiceWorker from './registerServiceWorker';
 
@@ -18,7 +18,7 @@ ReactDOM.render(
       </ConnectedRouter>
     </PersistGate>
   </Provider>,
-  document.getElementById("root")
+  document.getElementById('root'),
 );
 // disable ServiceWorker
 // registerServiceWorker();

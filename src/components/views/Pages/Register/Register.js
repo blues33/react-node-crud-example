@@ -1,13 +1,15 @@
-import React from "react";
-import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
-import { Container, Row, Col, Card, CardBody, Button } from "reactstrap";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { connect } from 'react-redux';
+import { Field, reduxForm } from 'redux-form';
+import {
+  Container, Row, Col, Card, CardBody, Button,
+} from 'reactstrap';
+import { Link } from 'react-router-dom';
 
-import { signup } from "../../../../actions/user";
-import renderInput from "../../../common/FormInput";
-import { renderSelect } from "../../../common/FormSelect";
-import { registerFormValidate } from "../../../../utils/validate";
+import { signup } from '../../../../actions/user';
+import renderInput from '../../../common/FormInput';
+import { renderSelect } from '../../../common/FormSelect';
+import { registerFormValidate } from '../../../../utils/validate';
 
 const roles = [{
   label: 'Regular',
@@ -77,9 +79,11 @@ const Register = ({ submitting, loading, handleSubmit }) => (
 );
 
 const RegisterForm = reduxForm({
-  form: "registerForm",
+  form: 'registerForm',
   onSubmit: (values, dispatch, props) => {
-    const { role, email, password, fullname } = values;
+    const {
+      role, email, password, fullname,
+    } = values;
     props.registerUser({
       role,
       email,
@@ -87,12 +91,12 @@ const RegisterForm = reduxForm({
       fullname,
     });
   },
-  validate: registerFormValidate
+  validate: registerFormValidate,
 })(Register);
 
 export default connect(
   ({ authentication }) => ({ ...authentication }),
   dispatch => ({
     registerUser: form => dispatch(signup(form)),
-  })
+  }),
 )(RegisterForm);

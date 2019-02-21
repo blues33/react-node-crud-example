@@ -39,32 +39,32 @@ export const getUsers = () => ({
   type: GET_ALL_USERS,
 });
 
-export const getUser = (id) => ({
+export const getUser = id => ({
   type: GET_USER,
   id,
 });
 
-export const addUser = (user) => ({
+export const addUser = user => ({
   type: ADD_USER,
   user,
 });
 
-export const deleteUser = (id) => ({
+export const deleteUser = id => ({
   type: DELETE_USER,
   id,
 });
 
-export const updateUser = (user) => ({
+export const updateUser = user => ({
   type: UPDATE_USER,
   user,
 });
 
-export const updateProfile = (user) => ({
+export const updateProfile = user => ({
   type: UPDATE_PROFILE,
   data: user,
 });
 
-export const changePassword = (values) => ({
+export const changePassword = values => ({
   type: CHANGE_PASSWORD,
   payload: values,
 });

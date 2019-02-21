@@ -28,11 +28,11 @@ export const authorizedRequest = async (method, path, options = {}) => {
 
   config.headers = {
     'Content-Type': 'application/json',
-    'Authorization': `Bearer ${token}`,
+    Authorization: `Bearer ${token}`,
   };
 
   const request = axios(config);
-  request.catch(error => {
+  request.catch((error) => {
     if (error.response.status === 401) {
       console.log('authorization failed');
       store.dispatch(logout());

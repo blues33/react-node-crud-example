@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Button, Card, CardBody, CardFooter, Input, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import {
+  Button, Card, CardBody, Modal, ModalBody, ModalFooter, ModalHeader,
+} from 'reactstrap';
 import { Field, reduxForm } from 'redux-form';
 import StarRatings from 'react-star-ratings';
 import moment from 'moment';
@@ -38,16 +40,16 @@ class PendingReviews extends React.Component {
   submitReply = (e) => {
     this.props.handleSubmit(e);
     this.setState({
-      isModalOpen: false
+      isModalOpen: false,
     });
   }
 
   render() {
-    const { user, pendingReviews } = this.props;
+    const { pendingReviews } = this.props;
     return (
       <div className="animated fadeIn h-100 w-100">
-        {pendingReviews.length > 0 ?
-          pendingReviews.map((review, i) => (
+        {pendingReviews.length > 0
+          ? pendingReviews.map((review, i) => (
           <Card key={`review-${i}`}>
             <CardBody>
               <div className="space-between align-middle">
@@ -103,12 +105,12 @@ const ReduxForm = reduxForm({
 })(PendingReviews);
 
 export default connect(
-  ({ reviews, authentication, }) => ({
+  ({ reviews, authentication }) => ({
     ...reviews,
     ...authentication,
   }),
   dispatch => ({
-    fetchReviews: (userId) => dispatch(fetchPendingReviews(userId)),
-    submitReply: (reply) => dispatch(submitReply(reply)),
+    fetchReviews: userId => dispatch(fetchPendingReviews(userId)),
+    submitReply: reply => dispatch(submitReply(reply)),
   }),
 )(ReduxForm);

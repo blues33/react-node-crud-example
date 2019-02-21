@@ -1,26 +1,19 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
-  Badge,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
   Nav,
   NavItem,
-  NavLink
-} from "reactstrap";
-import PropTypes from "prop-types";
+} from 'reactstrap';
+import PropTypes from 'prop-types';
 
 import {
-  AppAsideToggler,
-  AppHeaderDropdown,
   AppNavbarBrand,
-  AppSidebarToggler
-} from "@coreui/react";
-import logo from "../../../assets/img/brand/logo.svg";
-import sygnet from "../../../assets/img/brand/sygnet.svg";
+  AppSidebarToggler,
+} from '@coreui/react';
+import logo from '../../../assets/img/brand/logo.svg';
+import sygnet from '../../../assets/img/brand/sygnet.svg';
 
 const propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
 };
 
 const defaultProps = {};
@@ -34,8 +27,12 @@ class DefaultHeader extends Component {
       <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile />
         <AppNavbarBrand
-          full={{ src: logo, width: 75, height: 25, alt: "Restaurant Logo" }}
-          minimized={{ src: sygnet, width: 27, height: 30, alt: "Restaurant Logo" }}
+          full={{
+            src: logo, width: 75, height: 25, alt: 'Restaurant Logo',
+          }}
+          minimized={{
+            src: sygnet, width: 27, height: 30, alt: 'Restaurant Logo',
+          }}
         />
         <AppSidebarToggler className="d-md-down-none" display="lg" />
 

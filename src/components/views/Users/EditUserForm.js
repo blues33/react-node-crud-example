@@ -10,7 +10,6 @@ import { updateUser, getUser } from '../../../actions/user';
 import { userFormValidate } from '../../../utils/validate';
 
 export class EditUserForm extends React.Component {
-
   componentDidMount() {
     this.props.getUser(this.props.match.params.id);
   }
@@ -22,7 +21,7 @@ export class EditUserForm extends React.Component {
     }
   }
 
-  handleCancel = e => {
+  handleCancel = (e) => {
     this.props.history.push('/users');
   };
 
@@ -79,16 +78,16 @@ export default connect(
       initialValues = {
         email: users.currentUser.email,
         fullname: users.currentUser.fullname,
-      }
+      };
     }
     return {
       ...authentication,
       ...users,
       initialValues,
-    }
+    };
   },
   dispatch => ({
-    getUser: (id) => dispatch(getUser(id)),
-    updateUser: (values) => dispatch(updateUser(values)),
+    getUser: id => dispatch(getUser(id)),
+    updateUser: values => dispatch(updateUser(values)),
   }),
 )(ReduxForm);

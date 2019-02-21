@@ -1,4 +1,6 @@
-import { call, all, takeLatest, put } from 'redux-saga/effects';
+import {
+  call, all, takeLatest, put,
+} from 'redux-saga/effects';
 import { toastr } from 'react-redux-toastr';
 import { push } from 'connected-react-router';
 
@@ -62,7 +64,7 @@ function* updateUser(action) {
 
 function* updateProfile(action) {
   try {
-    const response = yield call(authorizedRequest, 'put', `/users/profile`, { body: action.data });
+    const response = yield call(authorizedRequest, 'put', '/users/profile', { body: action.data });
     yield put({ type: PROFILE_UPDATED, user: response.data.data });
     yield call(toastr.success, '', 'Successfully updated your information');
   } catch (error) {

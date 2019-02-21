@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Button, Row, Col, Label, FormGroup, Card, CardBody, CardHeader, CardFooter, 
-  Modal, ModalHeader, ModalBody, ModalFooter, Input, FormFeedback, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import {
+  Button, Row, Col, Label, FormGroup, Card, CardBody, CardHeader, CardFooter,
+  Modal, ModalHeader, ModalBody, ModalFooter, Input, FormFeedback, Breadcrumb, BreadcrumbItem,
+} from 'reactstrap';
 import { Field, reduxForm } from 'redux-form';
-import _ from 'lodash';
 import moment from 'moment';
 import StarRatings from 'react-star-ratings';
 
@@ -13,11 +14,12 @@ import renderDatePicker from '../../common/FormDatepicker';
 import renderStarRating from '../../common/FormRating';
 import ConfirmModal from '../../common/ConfirmModal';
 import { getRestaurantInfo } from '../../../actions/restaurants';
-import { addReview, getReviewsList, updateReview, deleteReview, submitReply } from '../../../actions/reviews';
+import {
+  addReview, getReviewsList, updateReview, deleteReview, submitReply,
+} from '../../../actions/reviews';
 import { reviewFormValidate } from '../../../utils/validate';
 
 export class Restaurant extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -58,7 +60,7 @@ export class Restaurant extends React.Component {
 
   onReplyCommentChange = (e) => {
     const value = e.target.value;
-    const state = {replyComment: value};
+    const state = { replyComment: value };
     if (!value) {
       state.replyError = 'Required';
     } else {
@@ -69,7 +71,7 @@ export class Restaurant extends React.Component {
 
   submitReply = () => {
     if (!this.state.replyComment) {
-      this.setState({replyError: 'Required'});
+      this.setState({ replyError: 'Required' });
       return;
     }
     this.props.submitReply({
@@ -107,7 +109,7 @@ export class Restaurant extends React.Component {
 
   onCommentChange = (e) => {
     const value = e.target.value;
-    const state = {comment: value};
+    const state = { comment: value };
     if (!value) {
       state.editCommentError = 'Required';
     } else {
@@ -115,10 +117,10 @@ export class Restaurant extends React.Component {
     }
     this.setState(state);
   }
-  
+
   onReplyChange = (e) => {
     const value = e.target.value;
-    const state = {replyText: value};
+    const state = { replyText: value };
     if (!value) {
       state.editReplyError = 'Required';
     } else {
@@ -128,7 +130,7 @@ export class Restaurant extends React.Component {
   }
 
   editReview = () => {
-    let errors = {};
+    const errors = {};
     if (!this.state.comment) {
       errors.editCommentError = 'Required';
     }
@@ -161,10 +163,10 @@ export class Restaurant extends React.Component {
 
   onConfirmDelete = () => {
     this.props.deleteReview(this.state.selectedReview._id);
-    this.setState({ isDeleteModalOpen: false, selectedReview: null })
+    this.setState({ isDeleteModalOpen: false, selectedReview: null });
   }
 
-  handleCancel = e => {
+  handleCancel = (e) => {
     this.props.history.push('/restaurants');
   };
 
@@ -172,12 +174,12 @@ export class Restaurant extends React.Component {
     return (
       <div className="animated fadeIn h-100 w-100">
         <Breadcrumb>
-          {/*eslint-disable-next-line*/}
+          {/* eslint-disable-next-line */}
           <BreadcrumbItem><Link to="/restaurants">Restaurants</Link></BreadcrumbItem>
           <BreadcrumbItem active>{this.props.restaurant ? this.props.restaurant.name : 'Not found'}</BreadcrumbItem>
         </Breadcrumb>
-      {this.props.restaurant ?
-        <Row>
+      {this.props.restaurant
+        ? <Row>
           <Col xs="12" md={this.props.user.role === 'regular' ? 6 : 12}>
             <Card>
               <CardHeader>
@@ -205,8 +207,8 @@ export class Restaurant extends React.Component {
                     <Label><strong>Average rating</strong></Label>
                   </Col>
                   <Col xs="12" md={this.props.user.role === 'regular' ? 6 : 9}>
-                  { this.props.restaurant.rateAvg > 0 ?
-                    <div style={{marginBottom: '1em'}}>
+                  { this.props.restaurant.rateAvg > 0
+                    ? <div style={{ marginBottom: '1em' }}>
                       <StarRatings
                         rating={this.props.restaurant.rateAvg}
                         starRatedColor="rgb(230, 67, 47)"
@@ -214,7 +216,7 @@ export class Restaurant extends React.Component {
                         starSpacing="0px"
                       />
                     </div>
-                    : <div style={{marginBottom: '1em'}}><i>No review</i></div>
+                    : <div style={{ marginBottom: '1em' }}><i>No review</i></div>
                   }
                   </Col>
                 </FormGroup>
@@ -223,8 +225,8 @@ export class Restaurant extends React.Component {
                     <Label><strong>Highest rated review</strong></Label>
                   </Col>
                   <Col xs="12" md={this.props.user.role === 'regular' ? 6 : 9}>
-                  { this.props.restaurant.highestReview ?
-                    <div>
+                  { this.props.restaurant.highestReview
+                    ? <div>
                       <StarRatings
                         rating={this.props.restaurant.highestReview.rate}
                         starRatedColor="rgb(230, 67, 47)"
@@ -244,8 +246,8 @@ export class Restaurant extends React.Component {
                     <Label><strong>Lowest rated review</strong></Label>
                   </Col>
                   <Col xs="12" md={this.props.user.role === 'regular' ? 6 : 9}>
-                  { this.props.restaurant.lowestReview ?
-                    <div>
+                  { this.props.restaurant.lowestReview
+                    ? <div>
                       <StarRatings
                         rating={this.props.restaurant.lowestReview.rate}
                         starRatedColor="rgb(230, 67, 47)"
@@ -265,8 +267,7 @@ export class Restaurant extends React.Component {
                     <Label><strong>Reviews</strong></Label>
                   </Col>
                   <Col md="12">
-                  {this.props.reviews.map((review, i) =>
-                    <Card key={`review-${i}`}>
+                  {this.props.reviews.map((review, i) => <Card key={`review-${i}`}>
                       <CardBody>
                         <div className="space-between m-b-20 align-middle">
                           <div className="align-middle">
@@ -291,38 +292,37 @@ export class Restaurant extends React.Component {
                           {review.status === 'pending' ? 'Pending' : review.replyComment}
                         </i>
                       </CardBody>
-                      {this.props.user.role === 'owner' && review.status === 'pending' &&
-                      <CardFooter className="align-end">
+                      {this.props.user.role === 'owner' && review.status === 'pending'
+                      && <CardFooter className="align-end">
                         <Button color="primary" onClick={() => this.onReply(review)}>Reply</Button>
                       </CardFooter>
                       }
-                      {this.props.user.role === 'admin' &&
-                      <CardFooter className="align-end">
+                      {this.props.user.role === 'admin'
+                      && <CardFooter className="align-end">
                         <Button color="warning" onClick={() => this.onEdit(review)}>Edit</Button>
                         <Button color="danger" className="m-l-10" onClick={() => this.onDelete(review)}>Delete</Button>
                       </CardFooter>
                       }
-                    </Card>
-                  )}
+                    </Card>)}
                   </Col>
                 </FormGroup>
               </CardBody>
             </Card>
           </Col>
-          {this.props.user.role === 'regular' &&
-            <Col xs="12" md="6">
+          {this.props.user.role === 'regular'
+            && <Col xs="12" md="6">
               <Card>
                 <CardHeader>
                   <strong>My review</strong>
                 </CardHeader>
                 <CardBody>
-                  {this.props.myReview ?
-                  <>
+                  {this.props.myReview
+                    ? <>
                     <FormGroup row>
                       <Col md="6">
                         <Label><strong>Rating</strong></Label>
                       </Col>
-                      <Col md="6" style={{marginBottom: '1em'}}>
+                      <Col md="6" style={{ marginBottom: '1em' }}>
                         <StarRatings
                           rating={this.props.myReview.rate}
                           starRatedColor="rgb(230, 67, 47)"
@@ -358,8 +358,7 @@ export class Restaurant extends React.Component {
                       </Col>
                     </FormGroup>
                   </>
-                  : 
-                  <>
+                    : <>
                     <label>Rating</label>
                     <Field
                       name="rate"
@@ -426,8 +425,8 @@ export class Restaurant extends React.Component {
               <Input type="textarea" className="form-control" value={this.state.comment} onChange={this.onCommentChange} />
               {this.state.editCommentError && <FormFeedback>{this.state.editCommentError}</FormFeedback>}
             </FormGroup>
-            {this.state.selectedReview && this.state.selectedReview.status !== 'pending' &&
-            <FormGroup className="custom-form-group">
+            {this.state.selectedReview && this.state.selectedReview.status !== 'pending'
+            && <FormGroup className="custom-form-group">
               <Label><strong>Reply comment</strong></Label>
               <Input type="textarea" className="form-control" value={this.state.replyText} onChange={this.onReplyChange} />
               {this.state.editReplyError && <FormFeedback>{this.state.editReplyError}</FormFeedback>}
@@ -464,20 +463,20 @@ const ReduxForm = reduxForm({
 
 export default connect(
   ({ authentication, restaurants, reviews }, props) => {
-    const myReview = reviews.reviews.find(review => review.user._id === authentication.user._id)
+    const myReview = reviews.reviews.find(review => review.user._id === authentication.user._id);
     return {
       ...authentication,
       ...reviews,
       myReview,
       restaurant: restaurants.currentRestaurant,
-    }
+    };
   },
   dispatch => ({
-    getRestaurant: (id) => dispatch(getRestaurantInfo(id)),
-    getReviews: (id) => dispatch(getReviewsList(id)),
+    getRestaurant: id => dispatch(getRestaurantInfo(id)),
+    getReviews: id => dispatch(getReviewsList(id)),
     addReview: (restaurantId, values) => dispatch(addReview(restaurantId, values)),
-    updateReview: (values) => dispatch(updateReview(values)),
-    deleteReview: (id) => dispatch(deleteReview(id)),
-    submitReply: (reply) => dispatch(submitReply(reply)),
+    updateReview: values => dispatch(updateReview(values)),
+    deleteReview: id => dispatch(deleteReview(id)),
+    submitReply: reply => dispatch(submitReply(reply)),
   }),
 )(ReduxForm);

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
 import { Button, Breadcrumb, BreadcrumbItem } from 'reactstrap';
-import _ from 'lodash';
 
 import renderInput from '../../common/FormInput';
 import { renderSelect } from '../../common/FormSelect';
@@ -19,12 +18,11 @@ const roles = [{
 }];
 
 export class UserForm extends React.Component {
-
   componentDidMount() {
-    
+
   }
 
-  handleCancel = e => {
+  handleCancel = (e) => {
     this.props.history.push('/users');
   };
 

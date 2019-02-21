@@ -5,7 +5,7 @@ import {
   REGISTER_SUCCESS,
   PROFILE_UPDATED,
   LOGOUT,
-} from "../global/constants";
+} from '../global/constants';
 
 const initialState = {
   loading: false,
@@ -51,7 +51,7 @@ export default function authentication(state = initialState, action) {
       };
     case LOGOUT:
       return {
-        ...initialState
+        ...initialState,
       };
     default:
       return state;

@@ -40,12 +40,12 @@ if (process.env.NODE_ENV === 'development') {
 
 const composedEnhancers = compose(
   applyMiddleware(...middlewares),
-  ...enhancers
+  ...enhancers,
 );
 const store = createStore(
   connectRouter(history)(persistedReducer),
   initialState,
-  composedEnhancers
+  composedEnhancers,
 );
 
 export const persistor = persistStore(store);

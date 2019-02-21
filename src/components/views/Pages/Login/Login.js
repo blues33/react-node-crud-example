@@ -1,6 +1,6 @@
-import React from "react";
-import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
+import React from 'react';
+import { connect } from 'react-redux';
+import { Field, reduxForm } from 'redux-form';
 import {
   Container,
   Row,
@@ -8,15 +8,17 @@ import {
   CardGroup,
   Card,
   CardBody,
-  Button
-} from "reactstrap";
+  Button,
+} from 'reactstrap';
 import { Link } from 'react-router-dom';
 
-import { login } from "../../../../actions/user";
-import renderInput from "../../../common/FormInput";
-import { loginFormValidate } from "../../../../utils/validate";
+import { login } from '../../../../actions/user';
+import renderInput from '../../../common/FormInput';
+import { loginFormValidate } from '../../../../utils/validate';
 
-const Login = ({ submitting, loading, handleSubmit, history }) => (
+const Login = ({
+  submitting, loading, handleSubmit, history,
+}) => (
   <div className="app flex-row align-items-center">
     <Container>
       <Row className="justify-content-center">
@@ -65,16 +67,16 @@ const Login = ({ submitting, loading, handleSubmit, history }) => (
 );
 
 const LoginForm = reduxForm({
-  form: "loginForm",
+  form: 'loginForm',
   onSubmit: (values, dispatch, props) => {
     props.loginUser(values);
   },
-  validate: loginFormValidate
+  validate: loginFormValidate,
 })(Login);
 
 export default connect(
   ({ authentication }) => ({ ...authentication }),
   dispatch => ({
     loginUser: form => dispatch(login(form)),
-  })
+  }),
 )(LoginForm);

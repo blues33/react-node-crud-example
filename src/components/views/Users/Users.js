@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'reactstrap';
-import _ from 'lodash';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 
@@ -35,7 +34,7 @@ class Users extends React.Component {
     this.setState({
       isModalOpen: true,
       delUser: user,
-    })
+    });
   }
 
   toggleConfirmModal = () => {
@@ -46,26 +45,26 @@ class Users extends React.Component {
 
   onConfirmDelete = () => {
     this.setState({
-      isModalOpen: false
-    })
+      isModalOpen: false,
+    });
     this.props.deleteUser(this.state.delUser._id);
   }
 
   onCancelDelete = () => {
     this.setState({
-      isModalOpen: false
-    })
+      isModalOpen: false,
+    });
   }
 
   render() {
-    const { user, users } = this.props;
+    const { users } = this.props;
     const { page, pageSize } = this.state;
     const columns = [{
       dataField: '_id',
       text: '#',
       formatter: (cell, row, rowIndex) => (page - 1) * pageSize + rowIndex + 1,
       classes: 'column-number',
-      headerClasses: 'column-number'
+      headerClasses: 'column-number',
     },
     {
       dataField: 'fullname',
@@ -93,11 +92,11 @@ class Users extends React.Component {
         </>
       ),
       classes: 'align-center',
-      headerClasses: 'align-center'
+      headerClasses: 'align-center',
     }];
     const defaultSorted = [{
       dataField: 'fullname',
-      order: 'desc'
+      order: 'desc',
     }];
     const options = {
       onSizePerPageChange: (sizePerPage, page) => {
@@ -113,7 +112,7 @@ class Users extends React.Component {
           pageSize: sizePerPage,
           page,
         });
-      }
+      },
     };
     return (
       <div className="animated fadeIn h-100 w-100">
@@ -147,12 +146,12 @@ class Users extends React.Component {
 }
 
 export default connect(
-  ({ users, authentication, }) => ({
+  ({ users, authentication }) => ({
     ...users,
     ...authentication,
   }),
   dispatch => ({
     getUsers: () => dispatch(getUsers()),
-    deleteUser: (id) => dispatch(deleteUser(id)),
+    deleteUser: id => dispatch(deleteUser(id)),
   }),
 )(Users);

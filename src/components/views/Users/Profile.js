@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Card, CardHeader, CardBody, FormGroup, Row, Col, Label } from 'reactstrap';
+import {
+  Button, Card, CardHeader, CardBody, FormGroup, Col, Label,
+} from 'reactstrap';
 import { Field, reduxForm } from 'redux-form';
 
 import renderInput from '../../common/FormInput';
@@ -18,7 +20,7 @@ export class ProfileForm extends React.Component {
   }
 
   onEdit = () => {
-    this.setState({editMode: true});
+    this.setState({ editMode: true });
     this.props.change('email', this.props.initialValues.email);
     this.props.change('fullname', this.props.initialValues.fullname);
   }
@@ -63,7 +65,7 @@ export class ProfileForm extends React.Component {
             </div>
             </>
             )
-            : (
+              : (
               <>
               <FormGroup row>
                 <Col xs="6">
@@ -89,7 +91,7 @@ export class ProfileForm extends React.Component {
                 </Col>
               </FormGroup>
               </>
-            )
+              )
             }
           </CardBody>
         </Card>
@@ -115,9 +117,9 @@ export default connect(
     return {
       ...authentication,
       initialValues,
-    }
+    };
   },
   dispatch => ({
-    updateProfile: (values) => dispatch(updateProfile(values)),
+    updateProfile: values => dispatch(updateProfile(values)),
   }),
 )(ReduxForm);

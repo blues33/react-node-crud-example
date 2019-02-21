@@ -45,7 +45,7 @@ export default function usersReducer(state = initialState, action) {
         users,
       };
     case USER_DELETED:
-      const index = users.findIndex((user) => user._id === action.user._id);
+      const index = users.findIndex(user => user._id === action.user._id);
       if (index >= 0) {
         users.splice(index, 1);
       }
@@ -55,7 +55,7 @@ export default function usersReducer(state = initialState, action) {
       };
     case LOGOUT:
       return {
-        ...initialState
+        ...initialState,
       };
     default:
       return state;

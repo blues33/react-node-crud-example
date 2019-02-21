@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormGroup, Label, FormFeedback } from 'reactstrap';
-import classnames from 'classnames';
-import DatePicker from "react-datepicker";
+import DatePicker from 'react-datepicker';
 
 const renderDatePicker = ({
   input,
@@ -27,7 +26,7 @@ const renderDatePicker = ({
 };
 
 renderDatePicker.propTypes = {
-  maxDate: PropTypes.instanceOf(Date).isRequired
+  maxDate: PropTypes.instanceOf(Date).isRequired,
 };
 
 export default renderDatePicker;

@@ -8,7 +8,7 @@ import {
   SUBMIT_REPLY,
 } from '../global/constants';
 
-export const getReviewsList = (id) => ({
+export const getReviewsList = id => ({
   type: GET_ALL_REVIEWS,
   restaurantId: id,
 });
@@ -19,27 +19,27 @@ export const addReview = (restaurantId, values) => ({
   values,
 });
 
-export const deleteReview = (id) => ({
+export const deleteReview = id => ({
   type: DELETE_REVIEW,
   id,
 });
 
-export const updateReview = (review) => ({
+export const updateReview = review => ({
   type: UPDATE_REVIEW,
   review,
 });
 
-export const getReview = (id) => ({
+export const getReview = id => ({
   type: GET_REVIEW,
   id,
 });
 
-export const fetchPendingReviews = (userId) => ({
+export const fetchPendingReviews = userId => ({
   type: FETCH_PENDING_REVIEWS,
   userId,
 });
 
-export const submitReply = (reply) => ({
+export const submitReply = reply => ({
   type: SUBMIT_REPLY,
   reviewId: reply.reviewId,
   replyComment: reply.replyComment,

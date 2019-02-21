@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Card, CardHeader, CardBody } from 'reactstrap';
+import {
+  Button, Card, CardHeader, CardBody,
+} from 'reactstrap';
 import { Field, reduxForm } from 'redux-form';
 
 import renderInput from '../../common/FormInput';
@@ -61,9 +63,9 @@ export default connect(
   ({ authentication }, props) => {
     return {
       ...authentication,
-    }
+    };
   },
   dispatch => ({
-    changePassword: (values) => dispatch(changePassword(values)),
+    changePassword: values => dispatch(changePassword(values)),
   }),
 )(ReduxForm);

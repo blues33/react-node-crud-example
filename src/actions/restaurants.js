@@ -6,12 +6,12 @@ import {
   GET_RESTAURANT,
 } from '../global/constants';
 
-export const getRestaurantsList = (values) => ({
+export const getRestaurantsList = values => ({
   type: GET_ALL_RESTAURANTS,
   query: values,
 });
 
-export const addRestaurant = (restaurant) => ({
+export const addRestaurant = restaurant => ({
   type: ADD_RESTAURANT,
   restaurant,
 });
@@ -22,12 +22,12 @@ export const deleteRestaurant = (id, callback) => ({
   callback,
 });
 
-export const updateRestaurant = (restaurant) => ({
+export const updateRestaurant = restaurant => ({
   type: UPDATE_RESTAURANT,
   restaurant,
 });
 
-export const getRestaurantInfo = (id) => ({
+export const getRestaurantInfo = id => ({
   type: GET_RESTAURANT,
   id,
-})
+});
