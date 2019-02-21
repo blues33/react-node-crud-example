@@ -14,6 +14,8 @@ class Users extends React.Component {
     this.state = {
       isModalOpen: false,
       delUser: null,
+      page: 1,
+      pageSize: 0,
     };
   }
 
@@ -57,10 +59,11 @@ class Users extends React.Component {
 
   render() {
     const { user, users } = this.props;
+    const { page, pageSize } = this.state;
     const columns = [{
       dataField: '_id',
       text: '#',
-      formatter: (cell, row, rowIndex) => rowIndex + 1,
+      formatter: (cell, row, rowIndex) => (page - 1) * pageSize + rowIndex + 1,
       classes: 'column-number',
       headerClasses: 'column-number'
     },
@@ -92,6 +95,18 @@ class Users extends React.Component {
       classes: 'align-center',
       headerClasses: 'align-center'
     }];
+    const defaultSorted = [{
+      dataField: 'fullname',
+      order: 'desc'
+    }];
+    const options = {
+      onPageChange: (page, sizePerPage) => {
+        this.setState({
+          pageSize: sizePerPage,
+          page,
+        });
+      }
+    };
     return (
       <div className="animated fadeIn h-100 w-100">
         <Button color="primary" onClick={this.onAdd} className="m-b-20">
@@ -100,9 +115,10 @@ class Users extends React.Component {
         <BootstrapTable
           bootstrap4
           keyField='_id'
-          data={ users }
-          columns={ columns }
-          pagination={ paginationFactory() }
+          data={users}
+          columns={columns}
+          defaultSorted={defaultSorted}
+          pagination={ paginationFactory(options) }
           noDataIndication="No user found"
           striped
           hover

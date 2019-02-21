@@ -24,8 +24,10 @@ export class ProfileForm extends React.Component {
   }
 
   update = () => {
-    this.props.handleSubmit();
-    this.setState({ editMode: false });
+    if (this.props.valid) {
+      this.props.handleSubmit();
+      this.setState({ editMode: false });
+    }
   }
 
   render() {

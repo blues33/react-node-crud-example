@@ -10,14 +10,6 @@ import ConfirmModal from '../../common/ConfirmModal';
 import { getRestaurantsList, deleteRestaurant } from '../../../actions/restaurants';
 import { getUsers } from '../../../actions/user';
 
-const operandList = [
-  { value: 'gte', label: '>=' },
-  { value: 'gt', label: '>' },
-  { value: 'eq', label: '=' },
-  { value: 'lt', label: '<' },
-  { value: 'lte', label: '<=' },
-];
-
 class Restaurants extends React.Component {
   constructor(props) {
     super(props);
@@ -26,6 +18,8 @@ class Restaurants extends React.Component {
       delRestaurant: null,
       maxRate: 5,
       minRate: 0,
+      pageSize: 0,
+      page: 1,
     };
   }
 
@@ -97,10 +91,11 @@ class Restaurants extends React.Component {
 
   render() {
     const { user, restaurants } = this.props;
+    const { page, pageSize } = this.state;
     const columns = [{
       dataField: '_id',
       text: '#',
-      formatter: (cell, row, rowIndex) => rowIndex + 1,
+      formatter: (cell, row, rowIndex) => (page - 1) * pageSize + rowIndex + 1,
       classes: 'column-number',
       headerClasses: 'column-number'
     },
@@ -149,6 +144,18 @@ class Restaurants extends React.Component {
       align: 'center',
       headerAlign: 'center'
     }];
+    const defaultSorted = [{
+      dataField: 'rateAvg',
+      order: 'desc'
+    }];
+    const options = {
+      onPageChange: (page, sizePerPage) => {
+        this.setState({
+          pageSize: sizePerPage,
+          page,
+        });
+      }
+    };
     return (
       <div className="animated fadeIn h-100 w-100">
         <div className="space-between m-b-20 align-middle">
@@ -177,9 +184,10 @@ class Restaurants extends React.Component {
         <BootstrapTable
           bootstrap4
           keyField='_id'
-          data={ restaurants }
-          columns={ columns }
-          pagination={ paginationFactory() }
+          data={restaurants}
+          columns={columns}
+          defaultSorted={defaultSorted}
+          pagination={ paginationFactory(options) }
           noDataIndication="No result found"
           striped
           hover
