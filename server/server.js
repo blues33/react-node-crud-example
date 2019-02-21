@@ -47,6 +47,10 @@ app.use((err, req, res, next) => {
       res.status(404).send(
         response(false, 'Can\'t find the ' + err.model.modelName.toLowerCase())
       );
+    } else if (err.name==='ValidationError') {
+      res.status(400).send(
+        response(false, err.message)
+      );
     } else {
       res.status(err.status || 500).send(
         response(false, JSON.stringify(err))
