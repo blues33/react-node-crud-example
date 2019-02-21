@@ -28,7 +28,7 @@ export const userFormValidate = (values) => {
 
 export const registerFormValidate = (values) => {
   const errors = {};
-  if (!values.role) {
+  if (!values.role || values.role === '---') {
     errors.role = 'Required';
   }
   if (!values.email) {

@@ -17,9 +17,7 @@ export const renderSelect = ({
       <Input
         {...input}
         type="select"
-        className={classnames('form-control', {
-          'is-invalid': error && touched,
-        })}
+        className={error && 'is-invalid'}
       >
         <option value={'---'}>{placeholder || '---'}</option>
         {options.map((item, index) => (
