@@ -87,8 +87,8 @@ export const reviewFormValidate = (values) => {
 
 export const replyFormValidate = (values) => {
   const errors = {};
-  if (!values.comment || !values.comment.trim()) {
-    errors.comment = 'Required';
+  if (!values.replyComment || !values.replyComment.trim()) {
+    errors.replyComment = 'Required';
   }
   return errors;
 };

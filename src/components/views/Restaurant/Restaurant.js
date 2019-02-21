@@ -55,6 +55,7 @@ export class Restaurant extends React.Component {
       selectedReview: review,
       isReplyModalOpen: true,
       replyComment: '',
+      replyError: '',
     });
   }
 
@@ -80,6 +81,7 @@ export class Restaurant extends React.Component {
     });
     this.setState({
       isReplyModalOpen: false,
+      selectedReview: null,
     });
   }
 
@@ -393,7 +395,7 @@ export class Restaurant extends React.Component {
       }
         <Modal isOpen={this.state.selectedReview && this.state.isReplyModalOpen}>
           <ModalHeader toggle={this.toggleReplyModal}>Reply</ModalHeader>
-          <ModalBody>
+          <ModalBody className="custom-form-group">
             <Label><strong>Reply comment</strong></Label>
             <Input type="textarea" className="form-control" value={this.state.replyComment} onChange={this.onReplyCommentChange} />
             {this.state.replyError && <FormFeedback>{this.state.replyError}</FormFeedback>}

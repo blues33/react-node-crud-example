@@ -39,9 +39,11 @@ class PendingReviews extends React.Component {
 
   submitReply = (e) => {
     this.props.handleSubmit(e);
-    this.setState({
-      isModalOpen: false,
-    });
+    if (this.props.valid) {
+      this.setState({
+        isModalOpen: false,
+      });
+    }
   }
 
   render() {
