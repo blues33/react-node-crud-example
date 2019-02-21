@@ -60,7 +60,7 @@ class Users extends React.Component {
     const columns = [{
       dataField: '_id',
       text: '#',
-      formatter: (cell, row, rowIndex) => rowIndex,
+      formatter: (cell, row, rowIndex) => rowIndex + 1,
       classes: 'column-number',
       headerClasses: 'column-number'
     },

@@ -19,15 +19,14 @@ export const renderSelect = ({
           'is-invalid': error && touched,
         })}
       >
-        <option value="">{placeholder || '---'}</option>
+        <option value={'---'}>{placeholder || '---'}</option>
         {options.map((item, index) => (
           <option key={index} value={item.value}>
             {item.label}
           </option>
         ))}
       </Input>
-      {touched &&
-        error && <FormFeedback className="error"> {error} </FormFeedback>}
+      {error && <FormFeedback className="error"> {error} </FormFeedback>}
     </FormGroup>
   );
 };

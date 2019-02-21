@@ -28,7 +28,7 @@ export const getReview = async (req, res, next) => {
 }
 
 export const getReviews = async (req, res, next) => {
-  const restaurantId = req.query.restaurant
+  const restaurantId = req.params.id
   try {
     let options = {
       restaurant: mongoose.Types.ObjectId(restaurantId)
@@ -67,12 +67,20 @@ export const getPendingReviews = async (req, res, next) => {
 }
 
 export const createReview = async (req, res, next) => {
+  const restaurantId = req.params.id;
 
+  const restaurant = await Restaurant.findById(restaurantId).populate('highestReview lowestReview');
+  if (!restaurant) {
+    res.status(400).send(
+      response(false, "Restaurant does not exist")
+    );
+    return;
+  }
+  
   const reviewSchema = Joi.object().keys({
     rate: Joi.number().greater(0).max(5),
     visited: Joi.date(),
     comment: Joi.string().required(),
-    restaurant: Joi.string().required(),
   }).options({ stripUnknown: true });
 
   try {
@@ -80,11 +88,11 @@ export const createReview = async (req, res, next) => {
     const data = await Joi.validate(req.body, reviewSchema);
 
     data.user = req.user;
-    data.restaurant = mongoose.Types.ObjectId(data.restaurant);
+    data.restaurant = mongoose.Types.ObjectId(restaurantId);
 
     const _review = await Review.findOne({
       user: mongoose.Types.ObjectId(req.user._id),
-      restaurant: data.restaurant,
+      restaurant: restaurantId,
     });
 
     if (_review) {
@@ -93,7 +101,6 @@ export const createReview = async (req, res, next) => {
       const review = new Review(data);
       await review.save();
 
-      const restaurant = await Restaurant.findOne({ _id: review.restaurant }).populate('highestReview lowestReview');
       if (!restaurant.highestReview || restaurant.highestReview.rate < review.rate) {
         restaurant.highestReview = review;
       }
@@ -102,7 +109,7 @@ export const createReview = async (req, res, next) => {
       }
       
       const reviews = await Review.find({
-        restaurant: data.restaurant,
+        restaurant: restaurantId,
       })
 
       if (reviews && reviews.length > 0) {
@@ -148,61 +155,55 @@ export const updateReview = async (req, res, next) => {
       })
 
       if (reviews && reviews.length > 0) {
-        const total = reviews.reduce((sum, review) => sum + review.rate, 0);
+        const total = reviews.reduce((sum, r) => sum + r.rate, 0);
         restaurant.rateAvg = Math.round(total / reviews.length * 100) / 100;
-      } else {
-        restaurant.rateAvg = 0;
-      }
       
-      if (restaurant.highestReview) {
-        if (restaurant.highestReview._id === review._id) {
-          if (restaurant.highestReview.rate > review.rate) {
+        if (restaurant.highestReview) {
+          if (restaurant.highestReview._id === review._id) {
             let _highestReview = null;
-            let _highestRate = 0;
             reviews.forEach(r => {
-              if (r.rate > _highestRate) {
-                _highestRate = r.rate;
+              if (!_highestReview || r.rate > _highestReview.rate) {
                 _highestReview = r;
               }
             })
             restaurant.highestReview = _highestReview;
+          } else {
+            if (restaurant.highestReview.rate < review.rate) {
+              restaurant.highestReview = review;
+            }
           }
         } else {
-          if (restaurant.highestReview.rate < review.rate) {
-            restaurant.highestReview = review;
-          }
+          restaurant.highestReview = review;
         }
-      } else {
-        restaurant.highestReview = review;
-      }
 
-      if (restaurant.lowestReview) {
-        if (restaurant.lowestReview._id === review._id) {
-          if (restaurant.lowestReview.rate < review.rate) {
+        if (restaurant.lowestReview) {
+          if (restaurant.lowestReview._id === review._id) {
             let _lowestReview = null;
-            let _lowestRate = 6;
             reviews.forEach(r => {
-              if (r.rate < _lowestRate) {
-                _lowestRate = r.rate;
+              if (!_lowestReview && r.rate < _lowestReview.rate) {
                 _lowestReview = r;
               }
             })
             restaurant.lowestReview = _lowestReview;
+          } else {
+            if (restaurant.lowestReview.rate > review.rate) {
+              restaurant.lowestReview = review;
+            }
           }
         } else {
-          if (restaurant.lowestReview.rate > review.rate) {
-            restaurant.lowestReview = review;
-          }
+          restaurant.lowestReview = review;
         }
       } else {
-        restaurant.lowestReview = review;
+        restaurant.rateAvg = 0;
+        restaurant.highestReview = null;
+        restaurant.lowestReview = null;
       }
 
       await restaurant.save();
       res.send( response(true, review) );
     } else {
       res.status(400).send(
-        response(false, "Can't find the review")
+        response(false, "Review does not exist")
       );
     }
   } catch (err) {
@@ -229,36 +230,34 @@ export const deleteReview = async(req, res, next) => {
       if (reviews && reviews.length > 0) {
         const total = reviews.reduce((sum, review) => sum + review.rate, 0);
         restaurant.rateAvg = Math.round(total / reviews.length * 100) / 100;
+      
+        if (restaurant.highestReview) {
+          if (restaurant.highestReview._id === review._id) {
+            let _highestReview = null;
+            reviews.forEach(r => {
+              if (!_highestReview || r.rate > _highestReview.rate) {
+                _highestReview = r;
+              }
+            })
+            restaurant.highestReview = _highestReview;
+          }
+        }
+
+        if (restaurant.lowestReview) {
+          if (restaurant.lowestReview._id === review._id) {
+            let _lowestReview = null;
+            reviews.forEach(r => {
+              if (!_lowestReview || r.rate < _lowestReview.rate) {
+                _lowestReview = r;
+              }
+            })
+            restaurant.lowestReview = _lowestReview;
+          }
+        }
       } else {
         restaurant.rateAvg = 0;
-      }
-      
-      if (restaurant.highestReview) {
-        if (restaurant.highestReview._id === review._id) {
-          let _highestReview = null;
-          let _highestRate = 0;
-          reviews.forEach(r => {
-            if (r.rate > _highestRate) {
-              _highestRate = r.rate;
-              _highestReview = r;
-            }
-          })
-          restaurant.highestReview = _highestReview;
-        }
-      }
-
-      if (restaurant.lowestReview) {
-        if (restaurant.lowestReview._id === review._id) {
-          let _lowestReview = null;
-          let _lowestRate = 6;
-          reviews.forEach(r => {
-            if (r.rate < _lowestRate) {
-              _lowestRate = r.rate;
-              _lowestReview = r;
-            }
-          })
-          restaurant.lowestReview = _lowestReview;
-        }
+        restaurant.highestReview = null;
+        restaurant.lowestReview = null;
       }
 
       await restaurant.save();
@@ -266,11 +265,11 @@ export const deleteReview = async(req, res, next) => {
       res.send( response(true, review) );
     } else {
       res.status(400).send(
-        response(false, "Can't find the review")
+        response(false, "Review does not exist")
       );
     }
   } catch(err) {
-    console.log('errror: ', err);
+    console.log('error: ', err);
     next(err);
   }
 }

@@ -19,7 +19,7 @@ import { authorizedRequest } from '../utils/api';
 
 function* getAllReviews(action) {
   try {
-    const response = yield call(authorizedRequest, 'get', `/reviews?restaurant=${action.restaurantId}`);
+    const response = yield call(authorizedRequest, 'get', `/restaurants/${action.restaurantId}/reviews`);
     yield put({ type: SET_REVIEWS, reviews: response.data.data });
   } catch (error) {
     console.log('get reviews error: ', error);
@@ -37,7 +37,7 @@ function* getReview(action) {
 
 function* addReview(action) {
   try {
-    const response = yield call(authorizedRequest, 'post', '/reviews', { body: action.review });
+    const response = yield call(authorizedRequest, 'post', `/restaurants/${action.restaurantId}/reviews`, { body: action.values });
     yield put({ type: GET_ALL_REVIEWS, restaurantId: response.data.data.restaurant });
     yield put({ type: GET_RESTAURANT, id: response.data.data.restaurant });
     yield call(toastr.success, '', 'Successfully added your review');

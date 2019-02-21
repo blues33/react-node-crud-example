@@ -47,7 +47,7 @@ export class PasswordForm extends React.Component {
 }
 
 const ReduxForm = reduxForm({
-  form: 'ProfileForm',
+  form: 'PasswordForm',
   onSubmit: (values, dispatch, props) => {
     props.changePassword({
       oldPassword: values.oldPassword,

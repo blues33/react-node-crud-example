@@ -8,6 +8,7 @@ import {
 } from '../utils/common';
 import Restaurant from '../models/restaurant';
 import Review from '../models/review';
+import { calculateAggregate } from './restaurant';
 
 export const login = async (req, res, next) => {
   const loginFields = Joi.object().keys({
@@ -140,13 +141,7 @@ export const getUser = async (req, res, next) => {
     const user = await User.findById(id);
 
     if (user) {
-      if (user.role !== 'admin') {
-        res.status(403).send(
-          response(false, 'Permission denied')
-        );
-      } else {
-        res.send( response(true, user.toObject()) );
-      }
+      res.send( response(true, user.toObject()) );
     } else {
       res.status(400).send(
         response(false, "User does not exist")
@@ -162,8 +157,6 @@ export const updateUser = async (req, res, next) => {
   const inputSchema = Joi.object().keys({
     email: Joi.string().email(),
     fullname : Joi.string().max(255),
-    password : Joi.string().max(255).min(8),
-    role : Joi.string().valid(['owner', 'regular']),
   }).options({ stripUnknown: true });
 
   const id = req.params.id;
@@ -215,23 +208,34 @@ export const deleteUser = async(req, res, next) => {
         res.status(403).send(
           response(false, 'Permission denied')
         );
-
-        return;
-      }
-
-      if (user.role === 'owner') {
+        return
+      } else if (user.role === 'owner') {
         const restaurants = await Restaurant.find({owner: id});
         if (restaurants && restaurants.length > 0) {
-          for (let i = 0; i <restaurants.length; i ++) {
+          for (let i = 0; i < restaurants.length; i ++) {
             await Review.remove({ restaurant: restaurants[i]._id });
             await restaurants[i].remove();
           }
+        }
+      } else if (user.role === 'regular') {
+        const reviews = await Review.find({user: id});
+        let relevantRestaurants = [];
+        if (reviews && reviews.length > 0) {
+          for (let i = 0; i < reviews.length; i ++) {
+            if (relevantRestaurants.indexOf(reviews[i].restaurant)) {
+              relevantRestaurants.push(reviews[i].restaurant);
+            }
+            await reviews[i].remove();
+          }
+        }
+        for (let j = 0; j < relevantRestaurants.length; j ++) {
+          await calculateAggregate(relevantRestaurants[j]);
         }
       }
 
       user.remove();
 
-      res.send( response(true, user) );
+      res.send( response(true, user.toObject()) );
     } else {
       res.status(400).send(
         response(false, "Can't find the user")
@@ -255,7 +259,7 @@ export const updateProfile = async (req, res, next) => {
     _.assign(req.user, data);
     await req.user.save();
 
-    res.send( response(true, req.user) );
+    res.send( response(true, req.user.toObject()) );
 
   } catch (err) {
     if (err.name === 'MongoError' && err.code === 11000) {
@@ -273,7 +277,7 @@ export const changePassword = async (req, res, next) => {
   const inputSchema = Joi.object().keys({
     oldPassword: Joi.string().max(255).required(),
     newPassword: Joi.string().max(255).min(8).required()
-  });
+  }).options({ stripUnknown: true });
 
   try {
     const data = await Joi.validate(req.body, inputSchema);

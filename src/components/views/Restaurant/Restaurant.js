@@ -419,10 +419,7 @@ export class Restaurant extends React.Component {
 const ReduxForm = reduxForm({
   form: 'ReviewForm',
   onSubmit: (values, dispatch, props) => {
-    props.addReview({
-      ...values,
-      restaurant: props.match.params.id,
-    });
+    props.addReview(props.match.params.id, values);
   },
   validate: reviewFormValidate,
 })(Restaurant);
@@ -440,7 +437,7 @@ export default connect(
   dispatch => ({
     getRestaurant: (id) => dispatch(getRestaurantInfo(id)),
     getReviews: (id) => dispatch(getReviewsList(id)),
-    addReview: (values) => dispatch(addReview(values)),
+    addReview: (restaurantId, values) => dispatch(addReview(restaurantId, values)),
     updateReview: (values) => dispatch(updateReview(values)),
     deleteReview: (id) => dispatch(deleteReview(id)),
     submitReply: (reply) => dispatch(submitReply(reply)),

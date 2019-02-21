@@ -2,6 +2,7 @@ import Joi from 'joi';
 import _ from 'lodash';
 import mongoose from 'mongoose';
 
+import User from '../models/user';
 import Restaurant from '../models/restaurant';
 import Review from '../models/review';
 import { response } from '../utils/common';
@@ -65,9 +66,17 @@ export const createRestaurant = async (req, res, next) => {
     const data = await Joi.validate(req.body, restaurantSchema);
 
     if (req.user.role === 'owner') {
-      data.owner = req.user;
+      data.owner = req.user._id;
     } else if (data.owner) {
-      data.owner = mongoose.Types.ObjectId(data.owner);
+      const ownerUser = await User.findById(data.owner);
+      if (ownerUser && ownerUser.role === 'owner') {
+        data.owner = mongoose.Types.ObjectId(data.owner);
+      } else {
+        res.status(400).send(
+          response(false, "Owner does not exist")
+        );
+        return;
+      }
     }
 
     const restaurant = new Restaurant(data);
@@ -89,7 +98,7 @@ export const createRestaurant = async (req, res, next) => {
 
 export const updateRestaurant = async (req, res, next) => {
   const id = req.params.id;
-
+  
   const obj = {
     name: Joi.string(),
     description: Joi.string().allow(''),
@@ -98,10 +107,23 @@ export const updateRestaurant = async (req, res, next) => {
   if (req.user.role === 'owner') {
     delete obj.owner;
   }
+
   const inputSchema = Joi.object().keys(obj).options({ stripUnknown: true });
 
   try {
     const data = await Joi.validate(req.body, inputSchema);
+    if (req.user.role === 'admin') {
+      const ownerUser = await User.findById(data.owner);
+      
+      if (ownerUser && ownerUser.role === 'owner') {
+        data.owner = mongoose.Types.ObjectId(data.owner);
+      } else {
+        res.status(400).send(
+          response(false, "Owner does not exist")
+        );
+        return;
+      }
+    }
 
     const restaurant = await Restaurant.findById(id);
 
@@ -160,3 +182,31 @@ export const deleteRestaurant = async(req, res, next) => {
   }
 }
 
+export const calculateAggregate = async (id) => {
+  try {
+    const restaurant = await Restaurant.findById(id);
+    if (restaurant) {
+      const reviews = await Review.find({restaurant: id});
+      let highestReview = null, lowestReview = null, average = 0;
+      if (reviews && reviews.length > 0) {
+        for (let i = 0; i < reviews.length; i ++) {
+          if (!highestReview || highestReview.rate < reviews[i].rate) {
+            highestReview = reviews[i];
+          }
+          if (!lowestReview || lowestReview.rate > reviews[i].rate) {
+            lowestReview = reviews[i];
+          }
+          average += reviews[i].rate;
+        }
+        average = Math.round(average / reviews.length * 100) / 100;
+      }
+      restaurant.highestReview = highestReview;
+      restaurant.lowestReview = lowestReview;
+      restaurant.rateAvg = average;
+
+      restaurant.save();
+    }
+  } catch (err) {
+    console.log('error: ', err);
+  }
+}

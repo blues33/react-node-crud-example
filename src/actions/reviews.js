@@ -13,9 +13,10 @@ export const getReviewsList = (id) => ({
   restaurantId: id,
 });
 
-export const addReview = (review) => ({
+export const addReview = (restaurantId, values) => ({
   type: ADD_REVIEW,
-  review,
+  restaurantId,
+  values,
 });
 
 export const deleteReview = (id) => ({

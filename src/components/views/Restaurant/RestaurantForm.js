@@ -16,6 +16,7 @@ export class RestaurantForm extends React.Component {
   componentDidMount() {
     if (this.props.user.role === 'admin') {
       this.props.getUsers();
+      this.props.change('owner', '---');
     }
   }
 

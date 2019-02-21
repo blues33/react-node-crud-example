@@ -82,8 +82,8 @@ class Restaurants extends React.Component {
     this.props.deleteRestaurant(this.state.delRestaurant._id, (success) => {
       if (success) {
         this.props.getRestaurantsList({
-          operand: this.state.filterOperand,
-          filterRate: this.state.filterValue,
+          min: this.state.minRate,
+          max: this.state.maxRate,
         });
       }
     });
@@ -100,7 +100,7 @@ class Restaurants extends React.Component {
     const columns = [{
       dataField: '_id',
       text: '#',
-      formatter: (cell, row, rowIndex) => rowIndex,
+      formatter: (cell, row, rowIndex) => rowIndex + 1,
       classes: 'column-number',
       headerClasses: 'column-number'
     },
