@@ -6,10 +6,22 @@ import { Button, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import _ from 'lodash';
 
 import renderInput from '../../common/FormInput';
-import { updateUser } from '../../../actions/user';
+import { updateUser, getUser } from '../../../actions/user';
 import { userFormValidate } from '../../../utils/validate';
 
 export class EditUserForm extends React.Component {
+
+  componentDidMount() {
+    this.props.getUser(this.props.match.params.id);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!_.isEqual(this.props.initialValues, nextProps.initialValues)) {
+      this.props.change('fullname', nextProps.initialValues.fullname);
+      this.props.change('email', nextProps.initialValues.email);
+    }
+  }
+
   handleCancel = e => {
     this.props.history.push('/users');
   };
@@ -50,11 +62,10 @@ export class EditUserForm extends React.Component {
 const ReduxForm = reduxForm({
   form: 'EditUserForm',
   onSubmit: (values, dispatch, props) => {
-    const selectedUser = props.users.find((item) => item._id === props.match.params.id)
-    if (!selectedUser) return;
+    if (!props.currentUser) return;
     const updatedValues = {
       ...values,
-      id: selectedUser._id,
+      id: props.currentUser._id,
     };
     props.updateUser(updatedValues);
   },
@@ -63,12 +74,11 @@ const ReduxForm = reduxForm({
 
 export default connect(
   ({ authentication, users }, props) => {
-    const selectedUser = users.users.find((item) => item._id === props.match.params.id)
-    let initialValues = {}
-    if (selectedUser) {
+    let initialValues = {};
+    if (users.currentUser) {
       initialValues = {
-        email: selectedUser.email,
-        fullname: selectedUser.fullname,
+        email: users.currentUser.email,
+        fullname: users.currentUser.fullname,
       }
     }
     return {
@@ -78,6 +88,7 @@ export default connect(
     }
   },
   dispatch => ({
+    getUser: (id) => dispatch(getUser(id)),
     updateUser: (values) => dispatch(updateUser(values)),
   }),
 )(ReduxForm);

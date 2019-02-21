@@ -94,7 +94,6 @@ export default connect(
         owner: restaurants.currentRestaurant.owner._id,
       }
     }
-    console.log('initial value: ', initialValues)
     return {
       ...authentication,
       ...restaurants,

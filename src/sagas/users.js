@@ -5,6 +5,8 @@ import { push } from 'connected-react-router';
 import {
   GET_ALL_USERS,
   SET_USERS_LIST,
+  GET_USER,
+  SET_CURRENT_USER,
   ADD_USER,
   USER_ADDED,
   UPDATE_USER,
@@ -22,6 +24,15 @@ function* getAllUsers(action) {
     yield put({ type: SET_USERS_LIST, users: response.data.data });
   } catch (error) {
     console.log('get users error: ', error);
+  }
+}
+
+function* getUser(action) {
+  try {
+    const response = yield call(authorizedRequest, 'get', `/users/${action.id}`);
+    yield put({ type: SET_CURRENT_USER, user: response.data.data });
+  } catch (error) {
+    console.log('get user error: ', error);
   }
 }
 
@@ -74,6 +85,7 @@ function* deleteUser(action) {
 export default function* adminSaga() {
   yield all([
     yield takeLatest(GET_ALL_USERS, getAllUsers),
+    yield takeLatest(GET_USER, getUser),
     yield takeLatest(ADD_USER, addUser),
     yield takeLatest(UPDATE_USER, updateUser),
     yield takeLatest(UPDATE_PROFILE, updateProfile),

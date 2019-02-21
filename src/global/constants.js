@@ -11,6 +11,8 @@ export const LOGOUT = 'USERS_LOGOUT';
 
 export const GET_ALL_USERS = 'GET_ALL_USERS';
 export const SET_USERS_LIST = 'SET_USERS_LIST';
+export const GET_USER = 'GET_USER';
+export const SET_CURRENT_USER = 'SET_CURRENT_USER';
 export const ADD_USER = 'ADD_USER';
 export const USER_ADDED = 'USER_ADDED';
 export const DELETE_USER = 'DELETE_USER';

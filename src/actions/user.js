@@ -5,6 +5,7 @@ import {
   REGISTER,
   LOGOUT,
   GET_ALL_USERS,
+  GET_USER,
   ADD_USER,
   DELETE_USER,
   UPDATE_USER,
@@ -36,6 +37,11 @@ export const signup = user => ({
 
 export const getUsers = () => ({
   type: GET_ALL_USERS,
+});
+
+export const getUser = (id) => ({
+  type: GET_USER,
+  id,
 });
 
 export const addUser = (user) => ({

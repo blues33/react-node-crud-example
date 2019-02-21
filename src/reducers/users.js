@@ -2,6 +2,7 @@ import _ from 'lodash';
 
 import {
   SET_USERS_LIST,
+  SET_CURRENT_USER,
   USER_ADDED,
   USER_UPDATED,
   USER_DELETED,
@@ -26,6 +27,11 @@ export default function usersReducer(state = initialState, action) {
       return {
         ...state,
         users: action.users,
+      };
+    case SET_CURRENT_USER:
+      return {
+        ...state,
+        currentUser: action.user,
       };
     case USER_UPDATED:
       users = users.map((user) => {
