@@ -17,6 +17,12 @@ export class ProfileForm extends React.Component {
     this.setState({ editMode: !this.state.editMode });
   }
 
+  onEdit = () => {
+    this.setState({editMode: true});
+    this.props.change('email', this.props.initialValues.email);
+    this.props.change('fullname', this.props.initialValues.fullname);
+  }
+
   update = () => {
     this.props.handleSubmit();
     this.setState({ editMode: false });
@@ -75,7 +81,7 @@ export class ProfileForm extends React.Component {
               </FormGroup>
               <FormGroup row>
                 <Col xs="12">
-                  <Button color="warning" onClick={this.toggleEdit}>
+                  <Button color="warning" onClick={this.onEdit}>
                     Edit
                   </Button>
                 </Col>
