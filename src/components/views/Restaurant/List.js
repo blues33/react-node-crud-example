@@ -149,6 +149,12 @@ class Restaurants extends React.Component {
       order: 'desc'
     }];
     const options = {
+      onSizePerPageChange: (sizePerPage, page) => {
+        this.setState({
+          pageSize: sizePerPage,
+          page,
+        });
+      },
       onPageChange: (page, sizePerPage) => {
         this.setState({
           pageSize: sizePerPage,

@@ -100,7 +100,15 @@ class Users extends React.Component {
       order: 'desc'
     }];
     const options = {
+      onSizePerPageChange: (sizePerPage, page) => {
+        console.log('size change: ', sizePerPage, page);
+        this.setState({
+          pageSize: sizePerPage,
+          page,
+        });
+      },
       onPageChange: (page, sizePerPage) => {
+        console.log('page change: ', sizePerPage, page);
         this.setState({
           pageSize: sizePerPage,
           page,

@@ -35,7 +35,7 @@ function* register(action) {
 
 function* changePassword(action) {
   try {
-    yield call(authorizedRequest, 'post', '/users/password', { body: action.payload });
+    yield call(authorizedRequest, 'put', '/users/password', { body: action.payload });
     yield call(toastr.success, '', 'Successfully changed password');
   } catch (error) {
     yield call(toastr.error, 'Error', error.response.data.data);

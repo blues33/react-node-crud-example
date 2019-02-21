@@ -20,7 +20,7 @@ export const userFormValidate = values => {
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
     errors.email = 'Invalid email address';
   }
-  if (!values.fullname) {
+  if (!values.fullname || !values.fullname.trim()) {
     errors.fullname = 'Required';
   }
   return errors;
@@ -36,7 +36,7 @@ export const registerFormValidate = values => {
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
     errors.email = 'Invalid email address';
   }
-  if (!values.fullname) {
+  if (!values.fullname || !values.fullname.trim()) {
     errors.fullname = 'Required';
   }
   if (!values.password) {
@@ -62,7 +62,7 @@ export const restaurantFormValidate = values => {
   if (values.owner === '---') {
     errors.owner = 'Required';
   }
-  if (!values.name) {
+  if (!values.name || !values.name.trim()) {
     errors.name = 'Required';
   }
   
@@ -79,7 +79,7 @@ export const reviewFormValidate = values => {
   } else if (moment(values.visited).isAfter(moment())) {
     errors.visited = 'Visit date cannot past today\'s date';
   }
-  if (!values.comment) {
+  if (!values.comment || !values.comment.trim()) {
     errors.comment = 'Required';
   }
   return errors;
@@ -87,7 +87,7 @@ export const reviewFormValidate = values => {
 
 export const replyFormValidate = values => {
   const errors = {};
-  if (!values.comment) {
+  if (!values.comment || !values.comment.trim()) {
     errors.comment = 'Required';
   }
   return errors;
