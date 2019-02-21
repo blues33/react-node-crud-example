@@ -7,10 +7,23 @@ import _ from 'lodash';
 
 import renderInput from '../../common/FormInput';
 import { renderSelect } from '../../common/FormSelect';
-import { updateRestaurant } from '../../../actions/restaurants';
+import { updateRestaurant, getRestaurantInfo } from '../../../actions/restaurants';
+import { getUsers } from '../../../actions/user';
 import { restaurantFormValidate } from '../../../utils/validate';
 
 export class EditRestaurantForm extends React.Component {
+  componentDidMount() {
+    this.props.getUsers();
+    this.props.getRestaurant(this.props.match.params.id);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!_.isEqual(this.props.initialValues, nextProps.initialValues)) {
+      this.props.change('name', nextProps.initialValues.name);
+      this.props.change('owner', nextProps.initialValues.owner);
+    }
+  }
+
   handleCancel = e => {
     this.props.history.push('/restaurants');
   };
@@ -28,7 +41,6 @@ export class EditRestaurantForm extends React.Component {
     return (
       <div className="animated fadeIn h-100 w-100">
         <Breadcrumb>
-          {/*eslint-disable-next-line*/}
           <BreadcrumbItem><Link to="/restaurants">Restaurants</Link></BreadcrumbItem>
           <BreadcrumbItem active>{this.props.initialValues.name}</BreadcrumbItem>
         </Breadcrumb>
@@ -63,11 +75,10 @@ export class EditRestaurantForm extends React.Component {
 const ReduxForm = reduxForm({
   form: 'EditRestaurantForm',
   onSubmit: (values, dispatch, props) => {
-    const selectedRestaurant = props.restaurants.find((item) => item._id === props.match.params.id)
-    if (!selectedRestaurant) return;
+    if (!props.currentRestaurant) return;
     const updatedValues = {
       ...values,
-      id: selectedRestaurant._id,
+      id: props.currentRestaurant._id,
     };
     props.updateRestaurant(updatedValues);
   },
@@ -76,14 +87,14 @@ const ReduxForm = reduxForm({
 
 export default connect(
   ({ authentication, restaurants, users }, props) => {
-    const selectedRestaurant = restaurants.restaurants.find((item) => item._id === props.match.params.id)
-    let initialValues = {}
-    if (selectedRestaurant) {
+    let initialValues = {};
+    if (restaurants.currentRestaurant) {
       initialValues = {
-        name: selectedRestaurant.name,
-        owner: selectedRestaurant.owner._id,
+        name: restaurants.currentRestaurant.name,
+        owner: restaurants.currentRestaurant.owner._id,
       }
     }
+    console.log('initial value: ', initialValues)
     return {
       ...authentication,
       ...restaurants,
@@ -92,6 +103,8 @@ export default connect(
     }
   },
   dispatch => ({
+    getUsers: () => dispatch(getUsers()),
+    getRestaurant: (id) => dispatch(getRestaurantInfo(id)),
     updateRestaurant: (values) => dispatch(updateRestaurant(values)),
   }),
 )(ReduxForm);
