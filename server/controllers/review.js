@@ -233,7 +233,7 @@ export const deleteReview = async(req, res, next) => {
         restaurant.rateAvg = Math.round(total / reviews.length * 100) / 100;
       
         if (restaurant.highestReview) {
-          if (restaurant.highestReview._id === review._id) {
+          if (restaurant.highestReview._id.equals(review._id)) {
             let _highestReview = null;
             reviews.forEach(r => {
               if (!_highestReview || r.rate > _highestReview.rate) {
@@ -245,7 +245,7 @@ export const deleteReview = async(req, res, next) => {
         }
 
         if (restaurant.lowestReview) {
-          if (restaurant.lowestReview._id === review._id) {
+          if (restaurant.lowestReview._id.equals(review._id)) {
             let _lowestReview = null;
             reviews.forEach(r => {
               if (!_lowestReview || r.rate < _lowestReview.rate) {
