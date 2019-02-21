@@ -30,6 +30,9 @@ export class Restaurant extends React.Component {
       isReplyModalOpen: false,
       replyComment: '',
       replyError: '',
+      editRatingError: '',
+      editCommentError: '',
+      editReplyError: '',
     };
   }
 
@@ -41,6 +44,7 @@ export class Restaurant extends React.Component {
   toggleReplyModal = () => {
     this.setState({
       isReplyModalOpen: !this.state.isReplyModalOpen,
+      selectedReview: null,
     });
   }
 
@@ -57,6 +61,8 @@ export class Restaurant extends React.Component {
     const state = {replyComment: value};
     if (!value) {
       state.replyError = 'Required';
+    } else {
+      state.replyError = '';
     }
     this.setState(state);
   }
@@ -78,6 +84,7 @@ export class Restaurant extends React.Component {
   toggleEditModal = () => {
     this.setState({
       isEditModalOpen: !this.state.isEditModalOpen,
+      selectedReview: null,
     });
   }
 
@@ -88,6 +95,9 @@ export class Restaurant extends React.Component {
       rate: review.rate,
       comment: review.comment,
       replyText: review.replyComment,
+      editRatingError: '',
+      editCommentError: '',
+      editReplyError: '',
     });
   }
 
@@ -96,15 +106,40 @@ export class Restaurant extends React.Component {
   }
 
   onCommentChange = (e) => {
-    this.setState({ comment: e.target.value });
+    const value = e.target.value;
+    const state = {comment: value};
+    if (!value) {
+      state.editCommentError = 'Required';
+    } else {
+      state.editCommentError = '';
+    }
+    this.setState(state);
   }
   
   onReplyChange = (e) => {
-    this.setState({ replyText: e.target.value });
+    const value = e.target.value;
+    const state = {replyText: value};
+    if (!value) {
+      state.editReplyError = 'Required';
+    } else {
+      state.editReplyError = '';
+    }
+    this.setState(state);
   }
 
   editReview = () => {
-    this.setState({ isEditModalOpen: false });
+    let errors = {};
+    if (!this.state.comment) {
+      errors.editCommentError = 'Required';
+    }
+    if (this.state.selectedReview.status !== 'pending' && !this.state.replyText) {
+      errors.editReplyError = 'Required';
+    }
+    if (Object.keys(errors).length > 0) {
+      this.setState(errors);
+      return;
+    }
+    this.setState({ isEditModalOpen: false, selectedReview: null });
     this.props.updateReview({
       ...this.state.selectedReview,
       comment: this.state.comment,
@@ -125,8 +160,8 @@ export class Restaurant extends React.Component {
   }
 
   onConfirmDelete = () => {
-    this.setState({ isDeleteModalOpen: false })
     this.props.deleteReview(this.state.selectedReview._id);
+    this.setState({ isDeleteModalOpen: false, selectedReview: null })
   }
 
   handleCancel = e => {
@@ -357,7 +392,7 @@ export class Restaurant extends React.Component {
         </Row>
         : <div className="align-center"><h4>Restaurant does not exist</h4></div>
       }
-        <Modal isOpen={this.state.isReplyModalOpen}>
+        <Modal isOpen={this.state.selectedReview && this.state.isReplyModalOpen}>
           <ModalHeader toggle={this.toggleReplyModal}>Reply</ModalHeader>
           <ModalBody>
             <Label><strong>Reply comment</strong></Label>
@@ -369,12 +404,12 @@ export class Restaurant extends React.Component {
             <Button color="secondary" onClick={this.toggleReplyModal}>Cancel</Button>
           </ModalFooter>
         </Modal>
-        <Modal isOpen={this.state.isEditModalOpen}>
+        <Modal isOpen={this.state.selectedReview && this.state.isEditModalOpen}>
           <ModalHeader toggle={this.toggleEditModal}>Edit Review</ModalHeader>
           <ModalBody>
             <FormGroup>
               <Label><strong>Rating</strong></Label>
-              <div className="m-b-10">
+              <div className="m-b-10 custom-form-group">
                 <StarRatings
                   rating={this.state.rate}
                   starRatedColor="rgb(230, 67, 47)"
@@ -383,16 +418,19 @@ export class Restaurant extends React.Component {
                   changeRating={this.changeRating}
                   numberOfStars={5}
                 />
+                {this.state.editRatingError && <FormFeedback>{this.state.editRatingError}</FormFeedback>}
               </div>
             </FormGroup>
-            <FormGroup>
+            <FormGroup className="custom-form-group">
               <Label><strong>Comment</strong></Label>
               <Input type="textarea" className="form-control" value={this.state.comment} onChange={this.onCommentChange} />
+              {this.state.editCommentError && <FormFeedback>{this.state.editCommentError}</FormFeedback>}
             </FormGroup>
             {this.state.selectedReview && this.state.selectedReview.status !== 'pending' &&
-            <FormGroup>
+            <FormGroup className="custom-form-group">
               <Label><strong>Reply comment</strong></Label>
               <Input type="textarea" className="form-control" value={this.state.replyText} onChange={this.onReplyChange} />
+              {this.state.editReplyError && <FormFeedback>{this.state.editReplyError}</FormFeedback>}
             </FormGroup>
             }
           </ModalBody>
