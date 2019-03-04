@@ -1,4 +1,4 @@
-# Restaurant review app
+# React + Node.js + Express CRUD example
 
 A trial project on which restaurant owners and users can exchange reviews.
 
